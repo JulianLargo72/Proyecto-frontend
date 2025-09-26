@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 🔹 fuerza que toda la pantalla esté ocupada */
+}
+
+.contenedor {
+  flex: 1; /* 🔹 el contenido crece para empujar el footer hacia abajo */
+}

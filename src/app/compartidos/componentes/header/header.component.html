@@ -1,0 +1,29 @@
+<mat-toolbar class="headerTop">
+    <span class="logo">
+        <img src="\logoTienda.png" alt="Smartstore" width="150" height="150" />
+    </span>
+    <nav class="nav">
+        <a mat-button routerLink="home">Inicio</a>
+        <a mat-button routerLink="catalogo">Teléfonos</a>
+        <a mat-button>Accesorios</a>
+        <a mat-button>Ofertas</a>
+        <a mat-button routerLink="/soporte">Soporte</a>
+        <a mat-button routerLink="/admin/login">
+            <img src="/img/user-circle.png" alt="Usuario" width="28" height="28" />
+        </a>
+    </nav>
+
+</mat-toolbar>
+<mat-toolbar class="headerSearch">
+    <div class="search-container">
+        <input type="text" placeholder="Buscar" />
+        <button>
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+
+<div class="hero">
+  <img src="\banner.png" alt="Banner Smartstore" class="hero-img" />
+</div>
+

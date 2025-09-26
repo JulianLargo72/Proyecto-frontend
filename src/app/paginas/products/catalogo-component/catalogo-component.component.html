@@ -1,0 +1,25 @@
+<section class="catalogo">
+  <div class="grid">
+    @for (cel of celulares; track cel.nombre) {
+      <div class="card">
+        <!-- Imagen clickeable -->
+        <a class="thumb"
+           [routerLink]="['/producto', cel.slug || slugify(cel.nombre)]"
+           [attr.aria-label]="'Ver ' + cel.nombre">
+          <img [src]="cel.foto" [alt]="cel.nombre" (error)="onImgError($event)">
+        </a>
+
+        <!-- Nombre clickeable -->
+        <h4 class="nombre">
+          <a [routerLink]="['/producto', cel.slug || slugify(cel.nombre)]">
+            {{ cel.nombre }}
+          </a>
+        </h4>
+
+        <div class="precio">
+          {{ cel.precio | currency }}
+        </div>
+      </div>
+    }
+  </div>
+</section>

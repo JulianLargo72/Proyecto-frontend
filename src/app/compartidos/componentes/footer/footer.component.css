@@ -1,0 +1,45 @@
+.footer {
+  background: #000;
+  padding: 16px 0;
+  color: #fff;
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: top;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .icons {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    a {
+      color: #fff;
+      font-size: 20px;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #0f2a3a; /* azulito al pasar el mouse */
+      }
+    }
+  }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .footer .container {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

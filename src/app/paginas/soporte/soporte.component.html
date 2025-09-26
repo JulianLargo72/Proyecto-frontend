@@ -1,0 +1,37 @@
+<section class="soporte-wrap">
+  <h2>Formulario de Soporte</h2>
+
+  <!-- 👇 define la variable del form -->
+  <form #formSoporte="ngForm"
+        (ngSubmit)="enviarFormulario(formSoporte)"
+        novalidate>
+
+    <label>Nombre completo</label>
+    <input type="text"
+           name="nombre"
+           [(ngModel)]="soporte.nombre"
+           required />
+
+    <label>Correo electrónico</label>
+    <input type="email"
+           name="email"
+           [(ngModel)]="soporte.email"
+           required
+           email />
+
+    <label>Teléfono</label>
+    <input type="tel"
+           name="telefono"
+           [(ngModel)]="soporte.telefono" />
+
+    <label>Mensaje</label>
+    <textarea name="mensaje"
+              [(ngModel)]="soporte.mensaje"
+              required
+              minlength="10"></textarea>
+
+    <button type="submit" [disabled]="formSoporte.invalid">
+      Enviar formulario
+    </button>
+  </form>
+</section>

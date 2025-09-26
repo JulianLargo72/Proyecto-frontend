@@ -1,0 +1,30 @@
+.topbar{
+  background:#0b0b0b;
+  height:80px;
+  display:flex; align-items:center;
+  padding:0 24px;
+}
+.logo{ height:42px; }
+
+.wrap{
+  max-width:520px; margin:32px auto; padding:0 16px; text-align:center;
+}
+.title{ font-size:40px; font-weight:900; margin:12px 0 24px; }
+
+.card{ display:flex; flex-direction:column; gap:10px; text-align:left; }
+label{ font-weight:700; }
+input{
+  width:100%; padding:12px; border:1px solid #ddd; border-radius:10px;
+  background:#f3f3f3; font-size:15px;
+}
+.err{ color:#b00020; font-size:12px; }
+
+.btn{
+  margin-top:12px; width:100%; padding:12px; border:none; border-radius:12px;
+  background:#111; color:#fff; font-weight:800; cursor:pointer;
+}
+.link{
+  display:block; margin-top:10px; text-align:center; color:#333;
+  text-decoration:none;
+}
+.alert{ margin-top:10px; color:#b00020; font-weight:700; text-align:center; }

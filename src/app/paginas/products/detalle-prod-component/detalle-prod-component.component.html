@@ -1,0 +1,58 @@
+<section class="detalle-wrap" *ngIf="celular as cel">
+  <button class="back" (click)="volver()">
+    <span class="arrow">←</span> Volver al catálogo
+  </button>
+
+  <article class="card">
+    <div class="left">
+      <img [src]="cel.foto" [alt]="cel.nombre" />
+    </div>
+
+    <div class="right">
+      <h2 class="title">
+        {{ cel.nombre }}
+      </h2>
+      <div class="price">
+        {{ cel.precio | currency }}
+      </div>
+
+      <div class="specs">
+        <div class="spec">
+          <span class="label">Referencia</span>
+          <span class="value">{{ cel.referencia || cel.nombre }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Batería</span>
+          <span class="value">{{ cel.bateria || '—' }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Sistema operativo</span>
+          <span class="value">{{ cel.sistema || 'Android / iOS' }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Ancho</span>
+          <span class="value">{{ cel.ancho || '—' }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Memoria del Sistema Ram</span>
+          <span class="value">{{ cel.ram || '—' }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Altavoz</span>
+          <span class="value">{{ cel.altavoz || 'Sí' }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Tipo de pantalla</span>
+          <span class="value">{{ cel.pantalla || 'AMOLED / IPS' }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Capacidad de almacenamiento</span>
+          <span class="value">{{ cel.almacenamiento || '128 GB' }}</span>
+        </div>
+      </div>
+
+      <button class="cta" (click)="agregarAlCarrito()">Agregar al carrito</button>
+    </div>
+  </article>
+</section>
+

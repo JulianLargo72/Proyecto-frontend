@@ -1,0 +1,96 @@
+:root {
+  --h-top: 64px;        /* altura de headerTop */
+  --h-search: 56px;     /* altura de headerSearch (solo referencia) */
+}
+
+
+.headerTop {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1100;
+  background: #0B0F12;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .nav a {
+    margin: 0 6px;
+    border-radius: 20px;
+    background: #11181D;
+    color: #fff;
+    font-weight: 700;
+    padding: 6px 14px;
+    text-decoration: none;
+  }
+
+  .nav a:hover {
+    background: #0F2A3A;
+  }
+}
+
+.headerSearch {
+  position: sticky;
+  position: -webkit-sticky;
+  top: var(--h-top);     /* se pega justo debajo de la primera */
+  z-index: 1090;
+  background: #11181D;
+  justify-content: flex-end;
+  height: 50px;
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    background: #0B0F12;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+
+    input {
+      border: none;
+      outline: none;
+      padding: 8px 12px;
+      background: transparent;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    button {
+      border: none;
+      background: #0B0F12;
+      color: #fff;
+      padding: 0 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100px; /* ajusta a la altura que quieras */
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: inherit; /* rellena el área manteniendo proporción */
+}
+
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5); /* capa semitransparente */
+}

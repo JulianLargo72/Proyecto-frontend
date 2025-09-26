@@ -1,0 +1,31 @@
+<!-- Barra superior negra con logo -->
+<header class="topbar">
+  <img src="/img/logoTienda.png" alt="Smartstore" class="logo">
+</header>
+
+<div class="wrap">
+  <h2 class="title">Administrador</h2>
+
+  <form [formGroup]="form" (ngSubmit)="login()" class="card" novalidate>
+    <label for="user">Usuario</label>
+    <input id="user" type="text" formControlName="user" placeholder="Usuario" />
+    <small class="err" *ngIf="form.controls['user'].touched && form.controls['user'].invalid">
+      El usuario es obligatorio.
+    </small>
+
+    <label for="pass">Contraseña</label>
+    <input id="pass" type="password" formControlName="pass" placeholder="Contraseña" />
+    <small class="err" *ngIf="form.controls['pass'].touched && form.controls['pass'].invalid">
+      Mínimo 6 caracteres.
+    </small>
+
+    <button class="btn" type="submit" [disabled]="form.invalid">Iniciar sesión</button>
+
+    <a class="link" routerLink="/soporte">¿Olvidaste la contraseña?</a>
+
+    <div class="alert" *ngIf="error">{{ error }}</div>
+  </form>
+</div>
+
+
+
