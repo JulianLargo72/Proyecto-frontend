@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Celular {
   slug: string;
   nombre: string;
   precio: number;
   foto: string;
-  // opcional: specs
-  referencia?: string;
-  bateria?: string;
-  sistema?: string;
-  ancho?: string;
-  ram?: string;
-  altavoz?: string;
-  pantalla?: string;
-  almacenamiento?: string;
+  referencia: string;
+  bateria: string;
+  sistema: string;
+  procesador: string;
+  ram: string;
+  almacenamiento: string;
+  pantalla: string;
+  camara: string;
 }
 
 
@@ -21,77 +22,29 @@ export interface Celular {
   providedIn: 'root'
 })
 export class ProductService {
+  private http = inject(HttpClient);
+  private jsonUrl = '/data/productos.json';
 
   constructor() { }
 
-  private _celulares: Celular[] = [
-    {
-          nombre: 'Samsung Galaxy S24 Ultra 256GB',
-          precio: 3649900,  // COP
-          foto: 'https://media.falabella.com/falabellaCO/127936384_01/w=1500,h=1500,fit=pad',
-          slug: 'Samsung-Galaxy-S24-Ultra'
+  // Obtener todos los celulares desde el JSON
+  getCelulares(): Observable<Celular[]> {
+    return this.http.get<Celular[]>(this.jsonUrl);
+  }
+
+  // Obtener un celular por slug desde el JSON
+  getBySlug(slug: string): Observable<Celular | undefined> {
+    return new Observable(observer => {
+      this.getCelulares().subscribe({
+        next: (celulares) => {
+          const celular = celulares.find(c => c.slug === slug);
+          observer.next(celular);
+          observer.complete();
         },
-        {
-          nombre: 'Samsung Galaxy S24 FE',
-          precio: 2699900,
-          foto: 'https://media.falabella.com/falabellaCO/73142852_1/w=1500,h=1500,fit=pad',
-          slug: 'Samsung-Galaxy-S24-FE'
-        },
-        {
-          nombre: 'Xiaomi Redmi Note 13 256GB',
-          precio: 1499900,
-          foto: 'https://media.falabella.com/falabellaCO/129848285_01/w=1500,h=1500,fit=pad',
-          slug: 'Xiaomi-Redmi-Note-13'
-        },
-        {
-          nombre: 'Xiaomi Redmi 12 256GB',
-          precio: 1189533,
-          foto: 'https://www.alkosto.com/medias/750Wx750H-master-hotfolder-transfer-incoming-deposit-hybris-interfaces-IN-media-product-6941812731246-001.jpg?context=bWFzdGVyfGltYWdlc3wyMDUxNTJ8aW1hZ2UvanBlZ3xhR0ZoTDJoaU9TOHhNemcwTWprMU1UQXhNak00TWk4M05UQlhlRGMxTUVoZmJXRnpkR1Z5TDJodmRHWnZiR1JsY2k5MGNtRnVjMlpsY2k5cGJtTnZiV2x1Wnk5a1pYQnZjMmwwTDJoNVluSnBjeTFwYm5SbGNtWmhZMlZ6TDBsT0wyMWxaR2xoTDNCeWIyUjFZM1F2TmprME1UZ3hNamN6TVRJME5sOHdNREV1YW5Cbnw5ZmQwMTY0NDBiZDlkNTQ1ODU0ZDQ0MTI0Y2U4YjUxNTZiNzlmMDllYmMyYTUzYzI3OTA0Njk4NGFjZTBlMWRi',
-          slug: 'Xiaomi-Redmi-12'
-        },
-        {
-          nombre: 'Apple iPhone 15 128GB',
-          precio: 3899900,
-          foto: 'https://exitocol.vtexassets.com/arquivos/ids/22695882/iphone-15-128gb-nuevo-negro.jpg?v=638697002090670000',
-          slug: 'Apple-iPhone-15'
-        },
-        {
-          nombre: 'Motorola Edge 50 Neo 5G 256GB',
-          precio: 799900,
-          foto: 'https://media.falabella.com/falabellaCO/73004861_1/w=1500,h=1500,fit=pad',
-          slug: 'Motorola-Edge-50-Neo-5G'
-        },
-        {
-          nombre: 'Samsung Galaxy A54 5G',
-          precio: 1499900,
-          foto: 'https://www.alkosto.com/medias/8806094990720-001-750Wx750H?context=bWFzdGVyfGltYWdlc3wxMjQwNnxpbWFnZS93ZWJwfGFESXpMMmc0WWk4eE5ETTNOelV3TXpBek1UTXlOaTg0T0RBMk1EazBPVGt3TnpJd1h6QXdNVjgzTlRCWGVEYzFNRWd8ZGQ0NDEwNGM0ZjI4ZWIyMTEyYWI5OWE5NzM4MDg3MmYyZDIyMjA1YzJmMWY2NjA1YjRjMTI0ZTFiNDFkMmQwYg',
-          slug: 'Samsung-Galaxy-A54-5G'
-        },
-        {
-          nombre: 'Google Pixel 8 128GB',
-          precio: 3199900,
-          foto: 'https://media.falabella.com/falabellaCO/142770947_01/w=1500,h=1500,fit=pad',
-          slug: 'Google-Pixel-8'
-        },
-        {
-          nombre: 'OnePlus Nord CE3 5G',
-          precio: 1299900,
-          foto: 'https://http2.mlstatic.com/D_NQ_NP_965543-MCO70395717340_072023-O.webp',
-          slug: 'OnePlus-Nord-CE3-5G'
-        },
-        {
-          nombre: 'Poco X6 Pro 5G',
-          precio: 2099900,
-          foto: 'https://media.falabella.com/falabellaCO/128594791_01/w=1500,h=1500,fit=pad',
-          slug: 'Poco-X6-Pro-5G'
+        error: (error) => {
+          observer.error(error);
         }
-  ];
-
-  //setCelulares(list: Celular[]) { this._celulares = list; }
-
-  getCelulares() { return this._celulares; }
-
-  getBySlug(slug: string): Celular | undefined {
-    return this._celulares.find(c => c.slug === slug);
+      });
+    });
   }
 }

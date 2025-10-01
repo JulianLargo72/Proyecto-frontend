@@ -1,53 +1,66 @@
-<section class="detalle-wrap" *ngIf="celular as cel">
+<!-- Estado de carga -->
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Cargando producto...</p>
+</div>
+
+<!-- Estado de error -->
+<div *ngIf="error && !loading" class="error-container">
+  <p class="error-message">{{ error }}</p>
+  <p>Redirigiendo al catálogo...</p>
+</div>
+
+<!-- Contenido del producto -->
+<section class="detalle-wrap" *ngIf="celular && !loading && !error">
   <button class="back" (click)="volver()">
     <span class="arrow">←</span> Volver al catálogo
   </button>
 
   <article class="card">
     <div class="left">
-      <img [src]="cel.foto" [alt]="cel.nombre" />
+      <img [src]="celular.foto" [alt]="celular.nombre" />
     </div>
 
     <div class="right">
       <h2 class="title">
-        {{ cel.nombre }}
+        {{ celular.nombre }}
       </h2>
       <div class="price">
-        {{ cel.precio | currency }}
+        {{ celular.precio | currency }}
       </div>
 
       <div class="specs">
         <div class="spec">
           <span class="label">Referencia</span>
-          <span class="value">{{ cel.referencia || cel.nombre }}</span>
+          <span class="value">{{ celular.referencia }}</span>
         </div>
         <div class="spec">
           <span class="label">Batería</span>
-          <span class="value">{{ cel.bateria || '—' }}</span>
+          <span class="value">{{ celular.bateria }}</span>
         </div>
         <div class="spec">
           <span class="label">Sistema operativo</span>
-          <span class="value">{{ cel.sistema || 'Android / iOS' }}</span>
+          <span class="value">{{ celular.sistema }}</span>
         </div>
         <div class="spec">
-          <span class="label">Ancho</span>
-          <span class="value">{{ cel.ancho || '—' }}</span>
+          <span class="label">Procesador</span>
+          <span class="value">{{ celular.procesador }}</span>
         </div>
         <div class="spec">
-          <span class="label">Memoria del Sistema Ram</span>
-          <span class="value">{{ cel.ram || '—' }}</span>
+          <span class="label">Memoria RAM</span>
+          <span class="value">{{ celular.ram }}</span>
         </div>
         <div class="spec">
-          <span class="label">Altavoz</span>
-          <span class="value">{{ cel.altavoz || 'Sí' }}</span>
+          <span class="label">Cámara</span>
+          <span class="value">{{ celular.camara }}</span>
         </div>
         <div class="spec">
-          <span class="label">Tipo de pantalla</span>
-          <span class="value">{{ cel.pantalla || 'AMOLED / IPS' }}</span>
+          <span class="label">Pantalla</span>
+          <span class="value">{{ celular.pantalla }}</span>
         </div>
         <div class="spec">
-          <span class="label">Capacidad de almacenamiento</span>
-          <span class="value">{{ cel.almacenamiento || '128 GB' }}</span>
+          <span class="label">Almacenamiento</span>
+          <span class="value">{{ celular.almacenamiento }}</span>
         </div>
       </div>
 
