@@ -6,15 +6,22 @@ import { CarritoComponentComponent } from './paginas/cart/carrito-component/carr
 import { CheckoutComponent } from './paginas/cart/checkout/checkout.component';
 import { SoporteComponent } from './paginas/soporte/soporte.component';
 import { LoginAdminComponent } from './paginas/auth/login-admin/login-admin.component';
+import { DashboardComponent } from './paginas/admin/dashboard/dashboard.component';
+import { authGuard } from './paginas/cart/core/auth.guard';
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'home', component: HomeComponent},
-    {path: 'catalogo', component: CatalogoComponentComponent},
-    {path: 'producto/:slug', component: DetalleProdComponentComponent},
+    { path: '', component: HomeComponent },
+    { path: 'home', component: HomeComponent },
+    { path: 'catalogo', component: CatalogoComponentComponent },
+    { path: 'producto/:slug', component: DetalleProdComponentComponent },
     { path: 'carrito', component: CarritoComponentComponent },
     { path: 'checkout', component: CheckoutComponent },
     { path: 'soporte', component: SoporteComponent },
     { path: 'admin/login', component: LoginAdminComponent },
+    { 
+        path: 'admin/dashboard', 
+        component: DashboardComponent,
+        canActivate: [authGuard]
+    },
     { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "admin123",
+    "nombre": "Administrador",
+    "email": "admin@tienda.com",
+    "rol": "admin"
+  },
+  {
+    "id": 2,
+    "username": "julianlargo",
+    "password": "julian2025",
+    "nombre": "Julian Largo",
+    "email": "julian@tienda.com",
+    "rol": "admin"
+  }
+]

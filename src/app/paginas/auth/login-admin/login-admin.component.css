@@ -22,7 +22,14 @@ input{
 .btn{
   margin-top:12px; width:100%; padding:12px; border:none; border-radius:12px;
   background:#111; color:#fff; font-weight:800; cursor:pointer;
+  transition: opacity 0.3s;
 }
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .link{
   display:block; margin-top:10px; text-align:center; color:#333;
   text-decoration:none;

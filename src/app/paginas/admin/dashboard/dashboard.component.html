@@ -1,0 +1,207 @@
+<div class="dashboard-wrap">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Panel de Administración</h1>
+        <p class="welcome">Bienvenido, <strong>{{ authService.currentUser?.nombre }}</strong></p>
+      </div>
+      <div class="header-right">
+        <button class="btn-logout" (click)="cerrarSesion()">
+          🚪 Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="dashboard-main">
+    <div class="section-header">
+      <h2>Gestión de Productos</h2>
+      <button class="btn-primary" (click)="abrirFormularioNuevo()">
+        ➕ Agregar Nuevo Producto
+      </button>
+    </div>
+
+    <!-- Tabla de Productos -->
+    <div class="table-container">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Referencia</th>
+            <th>Precio</th>
+            <th>RAM</th>
+            <th>Almacenamiento</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (productos.length === 0) {
+            <tr>
+              <td colspan="7" class="empty-state">
+                No hay productos disponibles
+              </td>
+            </tr>
+          }
+          @for (producto of productos; track producto.slug) {
+            <tr>
+              <td>
+                <img [src]="producto.foto" [alt]="producto.nombre" class="product-thumb">
+              </td>
+              <td class="product-name">{{ producto.nombre }}</td>
+              <td>{{ producto.referencia }}</td>
+              <td class="product-price">{{ producto.precio | currency }}</td>
+              <td>{{ producto.ram }}</td>
+              <td>{{ producto.almacenamiento }}</td>
+              <td class="actions-cell">
+                <button class="btn-edit" (click)="editarProducto(producto)" title="Editar">
+                  ✏️
+                </button>
+                <button class="btn-delete" (click)="eliminarProducto(producto.slug)" title="Eliminar">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Modal de Formulario -->
+  @if (mostrarFormulario) {
+    <div class="modal-overlay" (click)="cerrarFormulario()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ modoEdicion ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+          <button class="btn-close" (click)="cerrarFormulario()">✕</button>
+        </div>
+
+        <form class="product-form" (ngSubmit)="guardarProducto()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.nombre" 
+                name="nombre"
+                placeholder="Samsung Galaxy S24 Ultra"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Referencia *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.referencia" 
+                name="referencia"
+                placeholder="SM-S928B"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Precio *</label>
+              <input 
+                type="number" 
+                [(ngModel)]="productoForm.precio" 
+                name="precio"
+                placeholder="3649900"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>URL de Foto *</label>
+              <input 
+                type="url" 
+                [(ngModel)]="productoForm.foto" 
+                name="foto"
+                placeholder="https://..."
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Batería *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.bateria" 
+                name="bateria"
+                placeholder="5000 mAh"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Sistema Operativo *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.sistema" 
+                name="sistema"
+                placeholder="Android 14"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Procesador *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.procesador" 
+                name="procesador"
+                placeholder="Snapdragon 8 Gen 3"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>RAM *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.ram" 
+                name="ram"
+                placeholder="12GB"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Almacenamiento *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.almacenamiento" 
+                name="almacenamiento"
+                placeholder="256GB"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label>Pantalla *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.pantalla" 
+                name="pantalla"
+                placeholder="6.8 pulgadas AMOLED"
+                required>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label>Cámara *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="productoForm.camara" 
+                name="camara"
+                placeholder="200MP principal, 50MP teleobjetivo..."
+                required>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="cerrarFormulario()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">
+              {{ modoEdicion ? 'Actualizar' : 'Guardar' }} Producto
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>
