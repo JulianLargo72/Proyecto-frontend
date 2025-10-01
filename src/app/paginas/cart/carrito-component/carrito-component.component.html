@@ -1,41 +1,53 @@
 <section class="cart-wrap">
-  <button class="back" (click)="back()"><span class="arrow">←</span> Volver al inicio</button>
+  <button class="back" (click)="back()"><span class="arrow">←</span> Volver al catálogo</button>
 
   <article class="card">
-    <h2 class="title">Carrito</h2>
+    <h2 class="title">Carrito de Compras</h2>
 
-    <div class="grid header-row">
-      <span>Producto</span>
-      <span>Precio</span>
-      <span>Cantidad</span>
-    </div>
+    @if (cart.getItems().length === 0) {
+      <div class="empty-cart">
+        <p>Tu carrito está vacío</p>
+        <button class="cta-secondary" (click)="back()">Ver Catálogo</button>
+      </div>
+    } @else {
+      <div class="grid header-row">
+        <span>Producto</span>
+        <span>Precio</span>
+        <span>Cantidad</span>
+        <span>Subtotal</span>
+      </div>
 
-    @for (it of cart.getItems(); track it.slug) {
-      <div class="grid item">
-        <div class="product">
-          <img class="thumb" [src]="it.foto" [alt]="it.nombre" />
-          <span class="name">{{ it.nombre }}</span>
+      @for (it of cart.getItems(); track it.slug) {
+        <div class="grid item">
+          <div class="product">
+            <img class="thumb" [src]="it.foto" [alt]="it.nombre" />
+            <span class="name">{{ it.nombre }}</span>
+          </div>
+
+          <div class="price">
+            {{ it.precio | currency }}
+          </div>
+
+          <div class="qty">
+            <button class="btn-qty" (click)="dec(it)">−</button>
+            <span class="qty-val">{{ it.qty }}</span>
+            <button class="btn-qty" (click)="inc(it)">+</button>
+          </div>
+
+          <div class="subtotal">
+            {{ it.precio * it.qty | currency }}
+          </div>
         </div>
+      }
 
-        <div class="price">
-          {{ it.precio | currency }}
+      <div class="footer">
+        <div class="total">
+          Total:
+          <strong>{{ cart.total | currency }}</strong>
         </div>
-
-        <div class="qty">
-          <button class="btn-qty" (click)="dec(it)">−</button>
-          <span class="qty-val">{{ it.qty }}</span>
-          <button class="btn-qty" (click)="inc(it)">+</button>
-        </div>
+        <button class="cta" (click)="pagar()">Proceder a Pagar</button>
       </div>
     }
-
-    <div class="footer">
-      <div class="total">
-        Total:
-        <strong>{{ cart.total | currency}}</strong>
-      </div>
-      <button class="cta" (click)="pagar()">Proceder a Pagar</button>
-    </div>
   </article>
 </section>
 

@@ -1,0 +1,250 @@
+<section class="checkout-wrap">
+  <button class="back" (click)="volver()">
+    <span class="arrow">←</span> Volver al carrito
+  </button>
+
+  @if (!pedidoRealizado) {
+    <div class="checkout-container">
+      <!-- Formulario de datos -->
+      <div class="form-section">
+        <h2 class="section-title">Información de Envío</h2>
+        
+        <form class="checkout-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre">Nombre *</label>
+              <input 
+                type="text" 
+                id="nombre" 
+                [(ngModel)]="formData.nombre" 
+                name="nombre"
+                placeholder="Tu nombre"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="apellido">Apellido *</label>
+              <input 
+                type="text" 
+                id="apellido" 
+                [(ngModel)]="formData.apellido" 
+                name="apellido"
+                placeholder="Tu apellido"
+                required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Correo Electrónico *</label>
+              <input 
+                type="email" 
+                id="email" 
+                [(ngModel)]="formData.email" 
+                name="email"
+                placeholder="tu@email.com"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="telefono">Teléfono *</label>
+              <input 
+                type="tel" 
+                id="telefono" 
+                [(ngModel)]="formData.telefono" 
+                name="telefono"
+                placeholder="300 123 4567"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="direccion">Dirección *</label>
+            <input 
+              type="text" 
+              id="direccion" 
+              [(ngModel)]="formData.direccion" 
+              name="direccion"
+              placeholder="Calle 123 #45-67"
+              required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ciudad">Ciudad *</label>
+              <input 
+                type="text" 
+                id="ciudad" 
+                [(ngModel)]="formData.ciudad" 
+                name="ciudad"
+                placeholder="Bogotá"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="departamento">Departamento *</label>
+              <input 
+                type="text" 
+                id="departamento" 
+                [(ngModel)]="formData.departamento" 
+                name="departamento"
+                placeholder="Cundinamarca"
+                required>
+            </div>
+            
+            <div class="form-group">
+              <label for="codigoPostal">Código Postal</label>
+              <input 
+                type="text" 
+                id="codigoPostal" 
+                [(ngModel)]="formData.codigoPostal" 
+                name="codigoPostal"
+                placeholder="110111">
+            </div>
+          </div>
+
+          <h2 class="section-title">Método de Pago</h2>
+          
+          <div class="payment-methods">
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="metodoPago" 
+                value="tarjeta" 
+                [(ngModel)]="formData.metodoPago">
+              <span>💳 Tarjeta de Crédito/Débito</span>
+            </label>
+            
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="metodoPago" 
+                value="pse" 
+                [(ngModel)]="formData.metodoPago">
+              <span>🏦 PSE</span>
+            </label>
+            
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="metodoPago" 
+                value="contraentrega" 
+                [(ngModel)]="formData.metodoPago">
+              <span>📦 Contra Entrega</span>
+            </label>
+          </div>
+
+          @if (formData.metodoPago === 'tarjeta') {
+            <div class="card-details">
+              <div class="form-group">
+                <label for="numeroTarjeta">Número de Tarjeta</label>
+                <input 
+                  type="text" 
+                  id="numeroTarjeta" 
+                  [(ngModel)]="formData.numeroTarjeta" 
+                  name="numeroTarjeta"
+                  placeholder="1234 5678 9012 3456"
+                  maxlength="19">
+              </div>
+
+              <div class="form-group">
+                <label for="nombreTarjeta">Nombre en la Tarjeta</label>
+                <input 
+                  type="text" 
+                  id="nombreTarjeta" 
+                  [(ngModel)]="formData.nombreTarjeta" 
+                  name="nombreTarjeta"
+                  placeholder="JUAN PEREZ">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fechaExpiracion">Fecha de Expiración</label>
+                  <input 
+                    type="text" 
+                    id="fechaExpiracion" 
+                    [(ngModel)]="formData.fechaExpiracion" 
+                    name="fechaExpiracion"
+                    placeholder="MM/AA"
+                    maxlength="5">
+                </div>
+                
+                <div class="form-group">
+                  <label for="cvv">CVV</label>
+                  <input 
+                    type="text" 
+                    id="cvv" 
+                    [(ngModel)]="formData.cvv" 
+                    name="cvv"
+                    placeholder="123"
+                    maxlength="4">
+                </div>
+              </div>
+            </div>
+          }
+        </form>
+      </div>
+
+      <!-- Resumen del pedido -->
+      <div class="summary-section">
+        <h2 class="section-title">Resumen del Pedido</h2>
+        
+        <div class="summary-items">
+          @for (item of cart.getItems(); track item.slug) {
+            <div class="summary-item">
+              <img [src]="item.foto" [alt]="item.nombre" class="summary-thumb">
+              <div class="summary-info">
+                <p class="summary-name">{{ item.nombre }}</p>
+                <p class="summary-qty">Cantidad: {{ item.qty }}</p>
+              </div>
+              <div class="summary-price">
+                {{ item.precio * item.qty | currency }}
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="summary-total">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span>{{ cart.total | currency }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Envío:</span>
+            <span>Gratis</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total:</span>
+            <strong>{{ cart.total | currency }}</strong>
+          </div>
+        </div>
+
+        <button class="cta" (click)="realizarPedido()">
+          Confirmar Pedido
+        </button>
+
+        <p class="security-text">
+          🔒 Tu información está segura y protegida
+        </p>
+      </div>
+    </div>
+  } @else {
+    <!-- Confirmación del pedido -->
+    <div class="confirmation-wrap">
+      <div class="confirmation-card">
+        <div class="success-icon">✓</div>
+        <h2>¡Pedido Realizado con Éxito!</h2>
+        <p class="order-number">Número de pedido: <strong>{{ numeroPedido }}</strong></p>
+        <p class="confirmation-message">
+          Gracias por tu compra. Recibirás un correo de confirmación en <strong>{{ formData.email }}</strong>
+        </p>
+        <p class="redirect-message">
+          Serás redirigido al catálogo en unos segundos...
+        </p>
+        <button class="cta-secondary" (click)="router.navigateByUrl('/catalogo')">
+          Volver al Catálogo
+        </button>
+      </div>
+    </div>
+  }
+</section>

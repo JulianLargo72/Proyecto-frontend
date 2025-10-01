@@ -26,7 +26,13 @@ export class CartService {
   setQty(slug: string, qty: number) {
     const it = this.items.find(i => i.slug === slug);
     if (!it) return;
-    it.qty = Math.max(1, qty);
+    
+    // Si la cantidad es 0 o menor, eliminar el producto
+    if (qty <= 0) {
+      this.remove(slug);
+    } else {
+      it.qty = qty;
+    }
   }
 
   remove(slug: string) {
