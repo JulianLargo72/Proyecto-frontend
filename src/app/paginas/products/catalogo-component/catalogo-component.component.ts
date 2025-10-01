@@ -25,7 +25,8 @@ export class CatalogoComponentComponent implements OnInit {
     this.loading = true;
     this.error = '';
     
-    this.productService.getCelulares().subscribe({
+    // Usar el cache reactivo para que se actualice automáticamente con los cambios CRUD
+    this.productService.getProductosCache().subscribe({
       next: (data) => {
         this.celulares = data;
         this.loading = false;

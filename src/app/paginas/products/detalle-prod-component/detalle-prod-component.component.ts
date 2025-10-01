@@ -1,8 +1,9 @@
 import { CurrencyPipe, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Celular } from '../../../core/product.service';
 import { CartService} from '../../../core/cart.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,10 +13,11 @@ import { CartService} from '../../../core/cart.service';
   templateUrl: './detalle-prod-component.component.html',
   styleUrl: './detalle-prod-component.component.css'
 })
-export class DetalleProdComponentComponent {
+export class DetalleProdComponentComponent implements OnDestroy {
   celular?: Celular;
   loading: boolean = true;
   error: string = '';
+  private subscription?: Subscription;
 
   constructor(
     private cart: CartService,
@@ -29,14 +31,15 @@ export class DetalleProdComponentComponent {
     this.loading = true;
     this.error = '';
 
-    // Cargar el producto desde el servicio
-    this.productService.getBySlug(slug).subscribe({
+    // Suscribirse al cache reactivo para obtener actualizaciones en tiempo real
+    this.subscription = this.productService.getBySlug(slug).subscribe({
       next: (producto) => {
         if (producto) {
           this.celular = producto;
-        } else {
-          this.error = 'Producto no encontrado';
-          // Redirigir al catálogo después de 2 segundos
+          this.error = '';
+        } else if (!this.loading) {
+          // Solo mostrar error si ya terminó la carga inicial y el producto desapareció
+          this.error = 'Producto no encontrado o fue eliminado';
           setTimeout(() => {
             this.router.navigateByUrl('/catalogo');
           }, 2000);
@@ -47,12 +50,18 @@ export class DetalleProdComponentComponent {
         console.error('Error al cargar el producto:', err);
         this.error = 'Error al cargar el producto';
         this.loading = false;
-        // Redirigir al catálogo después de 2 segundos
         setTimeout(() => {
           this.router.navigateByUrl('/catalogo');
         }, 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    // Limpiar suscripción para evitar memory leaks
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   volver() {

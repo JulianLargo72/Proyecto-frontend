@@ -49,20 +49,11 @@ export class ProductService {
     return this.productosCache$.asObservable();
   }
 
-  // Obtener un celular por slug desde el JSON
+  // Obtener un celular por slug desde el cache (reactivo)
   getBySlug(slug: string): Observable<Celular | undefined> {
-    return new Observable(observer => {
-      this.getCelulares().subscribe({
-        next: (celulares) => {
-          const celular = celulares.find(c => c.slug === slug);
-          observer.next(celular);
-          observer.complete();
-        },
-        error: (error) => {
-          observer.error(error);
-        }
-      });
-    });
+    return this.productosCache$.pipe(
+      map(celulares => celulares.find(c => c.slug === slug))
+    );
   }
 
   // CRUD Methods (trabajan con el cache local)
