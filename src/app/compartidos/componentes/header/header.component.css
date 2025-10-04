@@ -13,19 +13,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px 16px;
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    max-width: 150px;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 
   .nav a {
-    margin: 0 6px;
+    margin: 0;
     border-radius: 20px;
     background: #11181D;
     color: #fff;
     font-weight: 700;
     padding: 6px 14px;
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .nav a:hover {
     background: #0F2A3A;
+  }
+
+  .user-icon {
+    width: 28px;
+    height: 28px;
+    display: block;
   }
 }
 
@@ -75,16 +102,16 @@
 .hero {
   position: relative;
   width: 100%;
-  height: 100px; /* ajusta a la altura que quieras */
+  height: 270px;
   overflow: hidden;
 }
 
 .hero-img {
   width: 100%;
   height: 100%;
-  object-fit: inherit; /* rellena el área manteniendo proporción */
+  object-fit: cover;
+  display: block;
 }
-
 
 .hero-overlay {
   position: absolute;
@@ -92,5 +119,97 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5); /* capa semitransparente */
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .headerTop .logo-img {
+    max-width: 120px;
+  }
+
+  .headerTop .nav a {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .headerTop {
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .headerTop .logo-img {
+    max-width: 100px;
+  }
+
+  .headerTop .nav {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .headerTop .nav a {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+
+  .hero {
+    height: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .headerTop .logo-img {
+    max-width: 80px;
+  }
+
+  .headerTop .nav {
+    gap: 4px;
+  }
+
+  .headerTop .nav a {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .headerTop .user-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hero {
+    height: 60px;
+  }
+
+  .headerSearch {
+    top: auto;
+    position: relative;
+    height: 45px;
+  }
+
+  .headerSearch .search-container {
+    width: 90%;
+  }
+
+  .headerSearch .search-container input {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .headerTop .logo-img {
+    max-width: 60px;
+  }
+
+  .headerTop .nav a {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+
+  .hero {
+    height: 50px;
+  }
 }
