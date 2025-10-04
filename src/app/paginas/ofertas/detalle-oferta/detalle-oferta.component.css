@@ -1,0 +1,253 @@
+.detalle-wrap {
+  background: #e9e9e9;
+  padding: 16px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #e5e5e5;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+.back .arrow { font-size: 18px; }
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  align-items: start;
+  position: relative;
+}
+
+/* Badge de descuento grande */
+.badge-descuento-grande {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: #ff4444;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(255, 68, 68, 0.5);
+  text-align: center;
+}
+
+.descuento-porcentaje {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.descuento-texto {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: 0.95;
+}
+
+.left {
+  position: relative;
+}
+
+.left img {
+  width: 100%;
+  height: 360px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f6f6f6;
+}
+
+.right .title {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: 900;
+  color: #111;
+}
+
+/* Contenedor de precios mejorado */
+.precio-container {
+  background: #f8f9fa;
+  border: 2px solid #e5e5e5;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.precio-info {
+  margin-bottom: 12px;
+}
+
+.precio-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.precio-original {
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: line-through;
+  color: #999;
+}
+
+.precio-info-oferta {
+  margin-bottom: 15px;
+}
+
+.precio-label-oferta {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 4px;
+}
+
+.precio-oferta {
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
+  color: #000;
+}
+
+.ahorro-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #d1fae5;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #10b981;
+}
+
+.ahorro-icono {
+  font-size: 20px;
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  margin-bottom: 20px;
+}
+
+.spec {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8px;
+}
+
+.label {
+  font-weight: 800;
+  color: #222;
+}
+
+.value {
+  font-weight: 600;
+  color: #444;
+}
+
+.cta {
+  background: #11181D;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(17, 24, 29, 0.6);
+}
+
+.cta:active {
+  transform: translateY(0);
+}
+
+/* Estilos para el estado de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px;
+  background: #e9e9e9;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Estilos para el estado de error */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px;
+  background: #e9e9e9;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.error-container p {
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .card { 
+    grid-template-columns: 1fr; 
+  }
+  .left img { 
+    height: 300px; 
+  }
+  .badge-descuento-grande {
+    top: 16px;
+    left: 16px;
+    padding: 12px 16px;
+  }
+  .descuento-porcentaje {
+    font-size: 24px;
+  }
+}

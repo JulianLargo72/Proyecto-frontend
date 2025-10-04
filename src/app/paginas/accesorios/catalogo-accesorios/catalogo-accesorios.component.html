@@ -1,0 +1,46 @@
+<section class="catalogo">
+  <!-- Estado de carga -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando accesorios...</p>
+    </div>
+  }
+
+  <!-- Estado de error -->
+  @else if (error) {
+    <div class="error-container">
+      <p class="error-message">{{ error }}</p>
+      <button (click)="loadAccesorios()" class="retry-button">Reintentar</button>
+    </div>
+  }
+
+  <!-- Listado de accesorios -->
+  @else {
+    <div class="grid">
+      @for (accesorio of accesorios; track accesorio.slug) {
+        <div class="card">
+          <!-- Imagen clickeable -->
+          <a class="thumb"
+             [routerLink]="['/accesorio', accesorio.slug]"
+             [attr.aria-label]="'Ver ' + accesorio.nombre">
+            <img [src]="accesorio.foto" [alt]="accesorio.nombre" (error)="onImgError($event)">
+          </a>
+
+          <!-- Nombre clickeable -->
+          <h4 class="nombre">
+            <a [routerLink]="['/accesorio', accesorio.slug]">
+              {{ accesorio.nombre }}
+            </a>
+          </h4>
+
+          <p class="marca">{{ accesorio.marca }}</p>
+
+          <div class="precio">
+            {{ accesorio.precio | currency }}
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

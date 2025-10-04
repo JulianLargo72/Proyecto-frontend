@@ -1,25 +1,44 @@
 <section class="catalogo">
-  <div class="grid">
-    @for (cel of celulares; track cel.nombre) {
-      <div class="card">
-        <!-- Imagen clickeable -->
-        <a class="thumb"
-           [routerLink]="['/producto', cel.slug || slugify(cel.nombre)]"
-           [attr.aria-label]="'Ver ' + cel.nombre">
-          <img [src]="cel.foto" [alt]="cel.nombre" (error)="onImgError($event)">
-        </a>
+  <!-- Estado de carga -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando productos...</p>
+    </div>
+  }
 
-        <!-- Nombre clickeable -->
-        <h4 class="nombre">
-          <a [routerLink]="['/producto', cel.slug || slugify(cel.nombre)]">
-            {{ cel.nombre }}
+  <!-- Estado de error -->
+  @else if (error) {
+    <div class="error-container">
+      <p class="error-message">{{ error }}</p>
+      <button (click)="loadCelulares()" class="retry-button">Reintentar</button>
+    </div>
+  }
+
+  <!-- Listado de productos -->
+  @else {
+    <div class="grid">
+      @for (cel of celulares; track cel.slug) {
+        <div class="card">
+          <!-- Imagen clickeable -->
+          <a class="thumb"
+             [routerLink]="['/producto', cel.slug]"
+             [attr.aria-label]="'Ver ' + cel.nombre">
+            <img [src]="cel.foto" [alt]="cel.nombre" (error)="onImgError($event)">
           </a>
-        </h4>
 
-        <div class="precio">
-          {{ cel.precio | currency }}
+          <!-- Nombre clickeable -->
+          <h4 class="nombre">
+            <a [routerLink]="['/producto', cel.slug]">
+              {{ cel.nombre }}
+            </a>
+          </h4>
+
+          <div class="precio">
+            {{ cel.precio | currency }}
+          </div>
         </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 </section>

@@ -1,19 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject, tap, map, catchError, of } from 'rxjs';
+import { SlugUtil } from './utils/slug.util';
 
 export interface Celular {
   slug: string;
   nombre: string;
   precio: number;
   foto: string;
-  // opcional: specs
-  referencia?: string;
-  bateria?: string;
-  sistema?: string;
-  ancho?: string;
-  ram?: string;
-  altavoz?: string;
-  pantalla?: string;
-  almacenamiento?: string;
+  referencia: string;
+  bateria: string;
+  sistema: string;
+  procesador: string;
+  ram: string;
+  almacenamiento: string;
+  pantalla: string;
+  camara: string;
 }
 
 
@@ -21,77 +23,108 @@ export interface Celular {
   providedIn: 'root'
 })
 export class ProductService {
+  private http = inject(HttpClient);
+  private readonly jsonUrl = 'data/productos.json';
+  
+  // Cache local de productos para el CRUD
+  private productosCache$ = new BehaviorSubject<Celular[]>([]);
+  private cacheLoaded = false;
 
-  constructor() { }
+  constructor() {
+    this.loadProductos();
+  }
 
-  private _celulares: Celular[] = [
-    {
-          nombre: 'Samsung Galaxy S24 Ultra 256GB',
-          precio: 3649900,  // COP
-          foto: 'https://media.falabella.com/falabellaCO/127936384_01/w=1500,h=1500,fit=pad',
-          slug: 'Samsung-Galaxy-S24-Ultra'
-        },
-        {
-          nombre: 'Samsung Galaxy S24 FE',
-          precio: 2699900,
-          foto: 'https://media.falabella.com/falabellaCO/73142852_1/w=1500,h=1500,fit=pad',
-          slug: 'Samsung-Galaxy-S24-FE'
-        },
-        {
-          nombre: 'Xiaomi Redmi Note 13 256GB',
-          precio: 1499900,
-          foto: 'https://media.falabella.com/falabellaCO/129848285_01/w=1500,h=1500,fit=pad',
-          slug: 'Xiaomi-Redmi-Note-13'
-        },
-        {
-          nombre: 'Xiaomi Redmi 12 256GB',
-          precio: 1189533,
-          foto: 'https://www.alkosto.com/medias/750Wx750H-master-hotfolder-transfer-incoming-deposit-hybris-interfaces-IN-media-product-6941812731246-001.jpg?context=bWFzdGVyfGltYWdlc3wyMDUxNTJ8aW1hZ2UvanBlZ3xhR0ZoTDJoaU9TOHhNemcwTWprMU1UQXhNak00TWk4M05UQlhlRGMxTUVoZmJXRnpkR1Z5TDJodmRHWnZiR1JsY2k5MGNtRnVjMlpsY2k5cGJtTnZiV2x1Wnk5a1pYQnZjMmwwTDJoNVluSnBjeTFwYm5SbGNtWmhZMlZ6TDBsT0wyMWxaR2xoTDNCeWIyUjFZM1F2TmprME1UZ3hNamN6TVRJME5sOHdNREV1YW5Cbnw5ZmQwMTY0NDBiZDlkNTQ1ODU0ZDQ0MTI0Y2U4YjUxNTZiNzlmMDllYmMyYTUzYzI3OTA0Njk4NGFjZTBlMWRi',
-          slug: 'Xiaomi-Redmi-12'
-        },
-        {
-          nombre: 'Apple iPhone 15 128GB',
-          precio: 3899900,
-          foto: 'https://exitocol.vtexassets.com/arquivos/ids/22695882/iphone-15-128gb-nuevo-negro.jpg?v=638697002090670000',
-          slug: 'Apple-iPhone-15'
-        },
-        {
-          nombre: 'Motorola Edge 50 Neo 5G 256GB',
-          precio: 799900,
-          foto: 'https://media.falabella.com/falabellaCO/73004861_1/w=1500,h=1500,fit=pad',
-          slug: 'Motorola-Edge-50-Neo-5G'
-        },
-        {
-          nombre: 'Samsung Galaxy A54 5G',
-          precio: 1499900,
-          foto: 'https://www.alkosto.com/medias/8806094990720-001-750Wx750H?context=bWFzdGVyfGltYWdlc3wxMjQwNnxpbWFnZS93ZWJwfGFESXpMMmc0WWk4eE5ETTNOelV3TXpBek1UTXlOaTg0T0RBMk1EazBPVGt3TnpJd1h6QXdNVjgzTlRCWGVEYzFNRWd8ZGQ0NDEwNGM0ZjI4ZWIyMTEyYWI5OWE5NzM4MDg3MmYyZDIyMjA1YzJmMWY2NjA1YjRjMTI0ZTFiNDFkMmQwYg',
-          slug: 'Samsung-Galaxy-A54-5G'
-        },
-        {
-          nombre: 'Google Pixel 8 128GB',
-          precio: 3199900,
-          foto: 'https://media.falabella.com/falabellaCO/142770947_01/w=1500,h=1500,fit=pad',
-          slug: 'Google-Pixel-8'
-        },
-        {
-          nombre: 'OnePlus Nord CE3 5G',
-          precio: 1299900,
-          foto: 'https://http2.mlstatic.com/D_NQ_NP_965543-MCO70395717340_072023-O.webp',
-          slug: 'OnePlus-Nord-CE3-5G'
-        },
-        {
-          nombre: 'Poco X6 Pro 5G',
-          precio: 2099900,
-          foto: 'https://media.falabella.com/falabellaCO/128594791_01/w=1500,h=1500,fit=pad',
-          slug: 'Poco-X6-Pro-5G'
+  private loadProductos(): void {
+    if (this.cacheLoaded) return;
+
+    this.getCelulares().subscribe({
+      next: (productos) => {
+        this.productosCache$.next(productos);
+        this.cacheLoaded = true;
+      },
+      error: (err) => console.error('Error al cargar productos:', err)
+    });
+  }
+
+  // Obtener todos los celulares desde el JSON
+  getCelulares(): Observable<Celular[]> {
+    return this.http.get<Celular[]>(this.jsonUrl).pipe(
+      tap(productos => {
+        if (!this.cacheLoaded) {
+          this.productosCache$.next(productos);
+          this.cacheLoaded = true;
         }
-  ];
+      }),
+      catchError(error => {
+        console.error('Error al obtener productos:', error);
+        return of([]);
+      })
+    );
+  }
 
-  //setCelulares(list: Celular[]) { this._celulares = list; }
+  // Obtener productos desde el cache
+  getProductosCache(): Observable<Celular[]> {
+    return this.productosCache$.asObservable();
+  }
 
-  getCelulares() { return this._celulares; }
+  // Obtener un celular por slug desde el cache (reactivo)
+  getBySlug(slug: string): Observable<Celular | undefined> {
+    return this.productosCache$.pipe(
+      map(celulares => celulares.find(c => c.slug === slug))
+    );
+  }
 
-  getBySlug(slug: string): Celular | undefined {
-    return this._celulares.find(c => c.slug === slug);
+  // CRUD Methods (trabajan con el cache local y retornan Observables para consistencia)
+  
+  agregarProducto(producto: Omit<Celular, 'slug'>): Observable<Celular> {
+    const nuevoProducto: Celular = {
+      ...producto,
+      slug: SlugUtil.generar(producto.nombre)
+    };
+
+    const productos = this.productosCache$.value;
+    this.productosCache$.next([...productos, nuevoProducto]);
+
+    return of(nuevoProducto);
+  }
+
+  actualizarProducto(slug: string, productoActualizado: Partial<Celular>): Observable<Celular | undefined> {
+    const productos = this.productosCache$.value;
+    const index = productos.findIndex(p => p.slug === slug);
+    
+    if (index === -1) {
+      console.warn(`Producto con slug "${slug}" no encontrado`);
+      return of(undefined);
+    }
+
+    const productoModificado = { ...productos[index], ...productoActualizado };
+    const nuevosProductos = [
+      ...productos.slice(0, index),
+      productoModificado,
+      ...productos.slice(index + 1)
+    ];
+
+    this.productosCache$.next(nuevosProductos);
+
+    return of(productoModificado);
+  }
+
+  eliminarProducto(slug: string): Observable<boolean> {
+    const productos = this.productosCache$.value;
+    const productosFiltrados = productos.filter(p => p.slug !== slug);
+
+    if (productos.length === productosFiltrados.length) {
+      console.warn(`Producto con slug "${slug}" no encontrado para eliminar`);
+      return of(false);
+    }
+
+    this.productosCache$.next(productosFiltrados);
+
+    return of(true);
+  }
+
+  // Generar slug automáticamente desde el nombre (delegado a utilidad)
+  generarSlug(nombre: string): string {
+    return SlugUtil.generar(nombre);
   }
 }

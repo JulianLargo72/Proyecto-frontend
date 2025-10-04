@@ -1,0 +1,89 @@
+<!-- Estado de carga -->
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Cargando oferta...</p>
+</div>
+
+<!-- Estado de error -->
+<div *ngIf="error && !loading" class="error-container">
+  <p class="error-message">{{ error }}</p>
+  <p>Redirigiendo al catálogo de ofertas...</p>
+</div>
+
+<!-- Contenido de la oferta -->
+<section class="detalle-wrap" *ngIf="oferta && !loading && !error">
+  <button class="back" (click)="volver()">
+    <span class="arrow">←</span> Volver a ofertas
+  </button>
+
+  <article class="card">
+    <!-- Badge de descuento flotante -->
+    <div class="badge-descuento-grande">
+      <div class="descuento-porcentaje">-{{ oferta.descuento }}%</div>
+      <div class="descuento-texto">DE DESCUENTO</div>
+    </div>
+
+    <div class="left">
+      <img [src]="oferta.foto" [alt]="oferta.nombre" />
+    </div>
+
+    <div class="right">
+      <h2 class="title">
+        {{ oferta.nombre }}
+      </h2>
+
+      <!-- Información de precios destacada -->
+      <div class="precio-container">
+        <div class="precio-info">
+          <div class="precio-label">Precio normal:</div>
+          <div class="precio-original">{{ oferta.precio | currency }}</div>
+        </div>
+        <div class="precio-info-oferta">
+          <div class="precio-label-oferta">Precio con descuento:</div>
+          <div class="precio-oferta">{{ calcularPrecioFinal() | currency }}</div>
+        </div>
+        <div class="ahorro-box">
+          <span class="ahorro-icono">💰</span>
+          <span class="ahorro-texto">Ahorras {{ calcularAhorro() | currency }}</span>
+        </div>
+      </div>
+
+      <div class="specs">
+        <div class="spec">
+          <span class="label">Referencia</span>
+          <span class="value">{{ oferta.referencia }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Batería</span>
+          <span class="value">{{ oferta.bateria }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Sistema operativo</span>
+          <span class="value">{{ oferta.sistema }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Procesador</span>
+          <span class="value">{{ oferta.procesador }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Memoria RAM</span>
+          <span class="value">{{ oferta.ram }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Cámara</span>
+          <span class="value">{{ oferta.camara }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Pantalla</span>
+          <span class="value">{{ oferta.pantalla }}</span>
+        </div>
+        <div class="spec">
+          <span class="label">Almacenamiento</span>
+          <span class="value">{{ oferta.almacenamiento }}</span>
+        </div>
+      </div>
+
+      <button class="cta" (click)="agregarAlCarrito()">Agregar al carrito</button>
+    </div>
+  </article>
+</section>

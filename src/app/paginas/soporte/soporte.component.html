@@ -1,37 +1,57 @@
 <section class="soporte-wrap">
-  <h2>Formulario de Soporte</h2>
+  @if (!solicitudEnviada) {
+    <h2>Formulario de Soporte</h2>
 
-  <!-- 👇 define la variable del form -->
-  <form #formSoporte="ngForm"
-        (ngSubmit)="enviarFormulario(formSoporte)"
-        novalidate>
+    <!-- 👇 define la variable del form -->
+    <form #formSoporte="ngForm"
+          (ngSubmit)="enviarFormulario(formSoporte)"
+          novalidate>
 
-    <label>Nombre completo</label>
-    <input type="text"
-           name="nombre"
-           [(ngModel)]="soporte.nombre"
-           required />
+      <label>Nombre completo</label>
+      <input type="text"
+             name="nombre"
+             [(ngModel)]="soporte.nombre"
+             required />
 
-    <label>Correo electrónico</label>
-    <input type="email"
-           name="email"
-           [(ngModel)]="soporte.email"
-           required
-           email />
+      <label>Correo electrónico</label>
+      <input type="email"
+             name="email"
+             [(ngModel)]="soporte.email"
+             required
+             email />
 
-    <label>Teléfono</label>
-    <input type="tel"
-           name="telefono"
-           [(ngModel)]="soporte.telefono" />
+      <label>Teléfono</label>
+      <input type="tel"
+             name="telefono"
+             [(ngModel)]="soporte.telefono" />
 
-    <label>Mensaje</label>
-    <textarea name="mensaje"
-              [(ngModel)]="soporte.mensaje"
-              required
-              minlength="10"></textarea>
+      <label>Mensaje</label>
+      <textarea name="mensaje"
+                [(ngModel)]="soporte.mensaje"
+                required
+                minlength="10"></textarea>
 
-    <button type="submit" [disabled]="formSoporte.invalid">
-      Enviar formulario
-    </button>
-  </form>
+      <button type="submit">
+        Enviar formulario
+      </button>
+    </form>
+  } @else {
+    <!-- Confirmación de solicitud -->
+    <div class="confirmation-wrap">
+      <div class="confirmation-card">
+        <div class="success-icon">✓</div>
+        <h2>¡Solicitud Enviada con Éxito!</h2>
+        <p class="order-number">Número de ticket: <strong>{{ numeroTicket }}</strong></p>
+        <p class="confirmation-message">
+          Gracias por contactarnos, <strong>{{ soporte.nombre }}</strong>. Tu solicitud ha sido recibida y te responderemos pronto en <strong>{{ soporte.email }}</strong>
+        </p>
+        <p class="redirect-message">
+          Serás redirigido al inicio en unos segundos...
+        </p>
+        <button class="cta-secondary" (click)="router.navigateByUrl('/home')">
+          Volver al Inicio
+        </button>
+      </div>
+    </div>
+  }
 </section>

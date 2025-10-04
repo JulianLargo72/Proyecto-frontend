@@ -1,30 +1,94 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, map, catchError, of } from 'rxjs';
+
+export interface Usuario {
+  id: number;
+  username: string;
+  password: string;
+  nombre: string;
+  email: string;
+  rol: string;
+}
+
+export interface UsuarioAutenticado {
+  id: number;
+  username: string;
+  nombre: string;
+  email: string;
+  rol: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private _logged$ = new BehaviorSubject<boolean>(false);
-  logged$ = this._logged$.asObservable();
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private usuariosUrl = 'data/usuarios.json';
+  
+  private _currentUser$ = new BehaviorSubject<UsuarioAutenticado | null>(null);
+  currentUser$ = this._currentUser$.asObservable();
 
-  // DEMO: credenciales
-  private demo = { user: 'admin', pass: 'admin123' };
-
-  constructor(private router: Router) {}
-
-  login(user: string, pass: string): boolean {
-    const ok = user === this.demo.user && pass === this.demo.pass;
-    this._logged$.next(ok);
-    return ok;
+  constructor() {
+    // Restaurar sesión desde localStorage
+    this.restoreSession();
   }
 
-  logout() {
-    this._logged$.next(false);
+  private restoreSession(): void {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
+        this._currentUser$.next(user);
+      } catch (e) {
+        localStorage.removeItem('currentUser');
+      }
+    }
+  }
+
+  login(username: string, password: string): Observable<boolean> {
+    return this.http.get<Usuario[]>(this.usuariosUrl).pipe(
+      map(usuarios => {
+        const usuario = usuarios.find(
+          u => u.username === username && u.password === password
+        );
+
+        if (usuario) {
+          const usuarioAuth: UsuarioAutenticado = {
+            id: usuario.id,
+            username: usuario.username,
+            nombre: usuario.nombre,
+            email: usuario.email,
+            rol: usuario.rol
+          };
+          
+          // Guardar en localStorage
+          localStorage.setItem('currentUser', JSON.stringify(usuarioAuth));
+          this._currentUser$.next(usuarioAuth);
+          return true;
+        }
+        return false;
+      }),
+      catchError(() => of(false))
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem('currentUser');
+    this._currentUser$.next(null);
     this.router.navigateByUrl('/');
   }
 
-  get isLogged() {
-    return this._logged$.value;
+  get isLogged(): boolean {
+    return this._currentUser$.value !== null;
+  }
+
+  get currentUser(): UsuarioAutenticado | null {
+    return this._currentUser$.value;
+  }
+
+  get isAdmin(): boolean {
+    return this.currentUser?.rol === 'admin' || false;
   }
 }
 

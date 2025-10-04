@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "airpods-pro-2",
+    "nombre": "AirPods Pro (2da Generación)",
+    "marca": "Apple",
+    "precio": 249000,
+    "foto": "https://co.tiendasishop.com/cdn/shop/files/IMG-14912675.jpg?v=1726874179&width=1000",
+    "informacion_adicional": "Auriculares inalámbricos con cancelación activa de ruido, audio espacial personalizado, resistencia al agua y al sudor IPX4, estuche MagSafe con hasta 30 horas de batería total."
+  },
+  {
+    "slug": "cargador-rapido-65w",
+    "nombre": "Cargador Rápido USB-C 65W",
+    "marca": "Anker",
+    "precio": 89000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_986051-MCO77206900372_072024-O.webp",
+    "informacion_adicional": "Cargador compacto con tecnología GaN, compatible con laptops, tablets y smartphones. Incluye cable USB-C a USB-C de 2 metros. Protección contra sobrecarga y sobrecalentamiento."
+  },
+  {
+    "slug": "funda-spigen-tough-armor",
+    "nombre": "Funda Spigen Tough Armor",
+    "marca": "Spigen",
+    "precio": 75000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_826141-MCO74218325424_012024-O.webp",
+    "informacion_adicional": "Funda de doble capa con tecnología Air Cushion para máxima protección contra impactos. Compatible con iPhone 15 Pro Max. Soporte integrado y bordes elevados para proteger cámara y pantalla."
+  },
+  {
+    "slug": "protector-pantalla-gorilla",
+    "nombre": "Protector de Pantalla Gorilla Glass",
+    "marca": "Belkin",
+    "precio": 45000,
+    "foto": "https://www.belkin.com/dw/image/v2/BGBH_PRD/on/demandware.static/-/Sites-master-product-catalog-blk/default/dw131777a3/images/hi-res/7/7f792b9c74fedbdf_OVB026_TemperedGlass_SamsungA-Series_A52-Hero_WEB.jpg?sw=700&sh=700&sm=fit&sfrm=png",
+    "informacion_adicional": "Vidrio templado ultra resistente de 0.33mm, dureza 9H, transparencia HD del 99.9%, resistente a rayones y huellas dactilares. Incluye kit de instalación fácil sin burbujas."
+  },
+  {
+    "slug": "power-bank-20000mah",
+    "nombre": "Power Bank 20000mAh",
+    "marca": "Samsung",
+    "precio": 125000,
+    "foto": "https://d2j6dbq0eux0bg.cloudfront.net/images/29139035/3981870805.png",
+    "informacion_adicional": "Batería externa de alta capacidad con carga rápida 25W, doble puerto USB (USB-C y USB-A), indicador LED de batería, diseño compacto y ligero. Carga hasta 4 dispositivos completos."
+  },
+  {
+    "slug": "soporte-auto-magnetico",
+    "nombre": "Soporte Auto Magnético 360°",
+    "marca": "iOttie",
+    "precio": 55000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_638108-MCO88727012130_072025-O.webp",
+    "informacion_adicional": "Soporte de celular para auto con tecnología MagSafe, rotación 360°, instalación en rejilla de ventilación o tablero. Agarre magnético ultra fuerte, compatible con iPhone 12 en adelante."
+  },
+  {
+    "slug": "cable-usb-c-trenzado",
+    "nombre": "Cable USB-C Trenzado 2M",
+    "marca": "Ugreen",
+    "precio": 35000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_945751-MLU78857491185_092024-O.webp",
+    "informacion_adicional": "Cable de nylon trenzado reforzado, carga rápida 100W, transferencia de datos USB 3.1 hasta 10Gbps. Conectores metálicos resistentes, garantía de 12000+ dobleces. Compatible con todos los dispositivos USB-C."
+  },
+  {
+    "slug": "smartwatch-band-leather",
+    "nombre": "Correa Cuero Genuino para Smartwatch",
+    "marca": "Nomad",
+    "precio": 95000,
+    "foto": "https://m.media-amazon.com/images/I/81Os0xLBDvL.jpg",
+    "informacion_adicional": "Correa de cuero genuino Horween con acabado natural que mejora con el tiempo. Hebilla de acero inoxidable, compatible con Apple Watch Series 4-9 (41mm/42mm/45mm). Disponible en color marrón oscuro."
+  },
+  {
+    "slug": "auriculares-deportivos-jbl",
+    "nombre": "Auriculares Deportivos JBL Endurance",
+    "marca": "JBL",
+    "precio": 180000,
+    "foto": "https://media.falabella.com.co/falabellaCO/120623545_01/width=240,height=240,quality=70,format=webp,fit=pad",
+    "informacion_adicional": "Auriculares inalámbricos in-ear con ganchos ergonómicos PowerHook, resistencia al agua IPX7, hasta 8 horas de batería, control táctil, tecnología TalkThru para escuchar sin quitarlos. Ideal para running y gym."
+  },
+  {
+    "slug": "ring-light-streaming",
+    "nombre": "Ring Light LED para Streaming",
+    "marca": "Generico",
+    "precio": 210000,
+    "foto": "https://media.falabella.com/falabellaCO/139943081_01/w=1500,h=1500,fit=pad",
+    "informacion_adicional": "Aro de luz LED profesional de 12 pulgadas con 3 modos de color (cálido, frío, neutro), control de brillo 0-100%, soporte para smartphone, trípode ajustable hasta 160cm. Perfecto para streaming, TikTok, fotografía."
+  }
+]

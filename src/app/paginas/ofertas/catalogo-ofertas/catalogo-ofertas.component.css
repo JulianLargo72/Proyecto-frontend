@@ -1,0 +1,202 @@
+.catalogo {
+  padding: 16px;
+}
+
+.ofertas-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #11181D;
+  color: white;
+  border-radius: 12px;
+}
+
+.ofertas-header h2 {
+  margin: 0 0 10px 0;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.ofertas-header p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  width: 200px;
+  min-height: 340px;
+  text-align: center;
+  margin: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 10px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.badge-descuento {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ff4444;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 900;
+  font-size: 14px;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(255, 68, 68, 0.4);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f2f2f2;
+  display: grid;
+  place-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.nombre {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111;
+  margin: 10px 0 5px 0;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nombre a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nombre a:hover {
+  color: #3498db;
+}
+
+.precios-container {
+  margin: 5px 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.precio-original {
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+  margin-bottom: 3px;
+}
+
+.precio-oferta {
+  font-size: 18px;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 5px;
+}
+
+.ahorro {
+  font-size: 11px;
+  color: #10b981;
+  font-weight: 700;
+  padding: 4px 8px;
+  background: #d1fae5;
+  border-radius: 12px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+/* Estilos para el estado de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Estilos para el estado de error */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.retry-button {
+  padding: 12px 24px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.retry-button:hover {
+  background-color: #2980b9;
+}

@@ -1,0 +1,45 @@
+<!-- Estado de carga -->
+<div *ngIf="loading" class="loading-container">
+  <div class="spinner"></div>
+  <p>Cargando accesorio...</p>
+</div>
+
+<!-- Estado de error -->
+<div *ngIf="error && !loading" class="error-container">
+  <p class="error-message">{{ error }}</p>
+  <p>Redirigiendo al catálogo...</p>
+</div>
+
+<!-- Contenido del accesorio -->
+<section class="detalle-wrap" *ngIf="accesorio && !loading && !error">
+  <button class="back" (click)="volver()">
+    <span class="arrow">←</span> Volver a accesorios
+  </button>
+
+  <article class="card">
+    <div class="left">
+      <img [src]="accesorio.foto" [alt]="accesorio.nombre" />
+    </div>
+
+    <div class="right">
+      <h2 class="title">
+        {{ accesorio.nombre }}
+      </h2>
+      
+      <p class="marca">
+        <strong>Marca:</strong> {{ accesorio.marca }}
+      </p>
+
+      <div class="price">
+        {{ accesorio.precio | currency }}
+      </div>
+
+      <div class="info-adicional">
+        <h3>Información adicional</h3>
+        <p>{{ accesorio.informacion_adicional }}</p>
+      </div>
+
+      <button class="cta" (click)="agregarAlCarrito()">Agregar al carrito</button>
+    </div>
+  </article>
+</section>

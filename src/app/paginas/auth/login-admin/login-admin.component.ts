@@ -15,12 +15,18 @@ import { AuthService } from '../../../core/auth.service';
 export class LoginAdminComponent {
   form: FormGroup;
   error = '';
+  loading = false;
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
     this.form = this.fb.group({
-      user: ['', Validators.required],
-      pass: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    // Si ya está autenticado, redirigir al dashboard
+    if (this.auth.isLogged) {
+      this.router.navigateByUrl('/admin/dashboard');
+    }
   }
 
   login() {
@@ -31,13 +37,22 @@ export class LoginAdminComponent {
       return;
     }
 
-    const { user, pass } = this.form.value;
+    const { username, password } = this.form.value;
+    this.loading = true;
 
-    if (this.auth.login(user!, pass!)) {
-      // Cambia '/admin' por tu dashboard real si ya lo tienes
-      this.router.navigateByUrl('/admin');
-    } else {
-      this.error = 'Usuario o contraseña inválidos';
-    }
+    this.auth.login(username!, password!).subscribe({
+      next: (success) => {
+        this.loading = false;
+        if (success) {
+          this.router.navigateByUrl('/admin/dashboard');
+        } else {
+          this.error = 'Usuario o contraseña incorrectos';
+        }
+      },
+      error: () => {
+        this.loading = false;
+        this.error = 'Error al intentar iniciar sesión';
+      }
+    });
   }
 }
