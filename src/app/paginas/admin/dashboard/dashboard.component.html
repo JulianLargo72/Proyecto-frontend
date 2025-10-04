@@ -28,6 +28,12 @@
       (click)="cambiarTab('accesorios')">
       🎧 Accesorios
     </button>
+    <button 
+      class="tab-button" 
+      [class.active]="tabActiva === 'ofertas'"
+      (click)="cambiarTab('ofertas')">
+      🔥 Ofertas
+    </button>
   </nav>
 
   <!-- Main Content -->
@@ -133,6 +139,65 @@
                       ✏️
                     </button>
                     <button class="btn-delete" (click)="eliminarAccesorio(accesorio.slug)" title="Eliminar">
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- ============ TAB OFERTAS ============ -->
+    @if (tabActiva === 'ofertas') {
+      <div class="tab-content">
+        <div class="section-header">
+          <h2>Gestión de Ofertas</h2>
+          <button class="btn-primary" (click)="abrirFormularioNuevaOferta()">
+            ➕ Agregar Nueva Oferta
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Referencia</th>
+                <th>Precio Original</th>
+                <th>Descuento</th>
+                <th>Precio Final</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (ofertas.length === 0) {
+                <tr>
+                  <td colspan="7" class="empty-state">
+                    No hay ofertas disponibles
+                  </td>
+                </tr>
+              }
+              @for (oferta of ofertas; track oferta.slug) {
+                <tr>
+                  <td>
+                    <img [src]="oferta.foto" [alt]="oferta.nombre" class="product-thumb">
+                  </td>
+                  <td class="product-name">{{ oferta.nombre }}</td>
+                  <td>{{ oferta.referencia }}</td>
+                  <td class="product-price">{{ oferta.precio | currency }}</td>
+                  <td class="discount-cell">{{ oferta.descuento }}%</td>
+                  <td class="final-price">
+                    {{ oferta.precio * (1 - oferta.descuento / 100) | currency }}
+                  </td>
+                  <td class="actions-cell">
+                    <button class="btn-edit" (click)="editarOferta(oferta)" title="Editar">
+                      ✏️
+                    </button>
+                    <button class="btn-delete" (click)="eliminarOferta(oferta.slug)" title="Eliminar">
                       🗑️
                     </button>
                   </td>
@@ -273,6 +338,91 @@
             </button>
             <button type="submit" class="btn-primary">
               {{ modoEdicionAccesorio ? 'Actualizar' : 'Guardar' }} Accesorio
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- ============ MODAL FORMULARIO OFERTAS ============ -->
+  @if (mostrarFormularioOferta) {
+    <div class="modal-overlay" (click)="cerrarFormularioOferta()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ modoEdicionOferta ? 'Editar Oferta' : 'Nueva Oferta' }}</h3>
+          <button class="btn-close" (click)="cerrarFormularioOferta()">✕</button>
+        </div>
+
+        <form class="product-form" (ngSubmit)="guardarOferta()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" [(ngModel)]="ofertaForm.nombre" name="nombre" placeholder="Samsung Galaxy S24 Ultra - Oferta Especial" required>
+            </div>
+
+            <div class="form-group">
+              <label>Referencia *</label>
+              <input type="text" [(ngModel)]="ofertaForm.referencia" name="referencia" placeholder="SM-S928B" required>
+            </div>
+
+            <div class="form-group">
+              <label>Precio Original *</label>
+              <input type="number" [(ngModel)]="ofertaForm.precio" name="precio" placeholder="3649900" required>
+            </div>
+
+            <div class="form-group">
+              <label>Descuento (%) *</label>
+              <input type="number" [(ngModel)]="ofertaForm.descuento" name="descuento" placeholder="15" min="0" max="100" required>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label>URL de Foto *</label>
+              <input type="url" [(ngModel)]="ofertaForm.foto" name="foto" placeholder="https://..." required>
+            </div>
+
+            <div class="form-group">
+              <label>Batería *</label>
+              <input type="text" [(ngModel)]="ofertaForm.bateria" name="bateria" placeholder="5000 mAh" required>
+            </div>
+
+            <div class="form-group">
+              <label>Sistema Operativo *</label>
+              <input type="text" [(ngModel)]="ofertaForm.sistema" name="sistema" placeholder="Android 14" required>
+            </div>
+
+            <div class="form-group">
+              <label>Procesador *</label>
+              <input type="text" [(ngModel)]="ofertaForm.procesador" name="procesador" placeholder="Snapdragon 8 Gen 3" required>
+            </div>
+
+            <div class="form-group">
+              <label>RAM *</label>
+              <input type="text" [(ngModel)]="ofertaForm.ram" name="ram" placeholder="12GB" required>
+            </div>
+
+            <div class="form-group">
+              <label>Almacenamiento *</label>
+              <input type="text" [(ngModel)]="ofertaForm.almacenamiento" name="almacenamiento" placeholder="256GB" required>
+            </div>
+
+            <div class="form-group">
+              <label>Pantalla *</label>
+              <input type="text" [(ngModel)]="ofertaForm.pantalla" name="pantalla" placeholder="6.8 pulgadas AMOLED" required>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label>Cámara *</label>
+              <input type="text" [(ngModel)]="ofertaForm.camara" name="camara" placeholder="200MP principal, 50MP teleobjetivo..." required>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="cerrarFormularioOferta()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">
+              {{ modoEdicionOferta ? 'Actualizar' : 'Guardar' }} Oferta
             </button>
           </div>
         </form>

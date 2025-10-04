@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { ProductService, Celular } from '../../../core/product.service';
 import { AccesorioService, Accesorio } from '../../../core/accesorio.service';
+import { OfertaService, Oferta } from '../../../core/oferta.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ import { AccesorioService, Accesorio } from '../../../core/accesorio.service';
 })
 export class DashboardComponent implements OnInit {
   // Control de tabs
-  tabActiva: 'productos' | 'accesorios' = 'productos';
+  tabActiva: 'productos' | 'accesorios' | 'ofertas' = 'productos';
 
   // Productos
   productos: Celular[] = [];
@@ -31,16 +32,26 @@ export class DashboardComponent implements OnInit {
   mostrarFormularioAccesorio = false;
   accesorioForm: Accesorio = this.crearAccesorioVacio();
 
+  // Ofertas
+  ofertas: Oferta[] = [];
+  ofertaEditando: Oferta | null = null;
+  modoEdicionOferta = false;
+  mostrarFormularioOferta = false;
+  ofertaForm!: Oferta;
+
   constructor(
     public authService: AuthService,
     private productService: ProductService,
     private accesorioService: AccesorioService,
+    private ofertaService: OfertaService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.ofertaForm = this.crearOfertaVacia();
     this.cargarProductos();
     this.cargarAccesorios();
+    this.cargarOfertas();
   }
 
   // ============ MÉTODOS DE PRODUCTOS ============
@@ -194,11 +205,90 @@ export class DashboardComponent implements OnInit {
   }
 
   // ============ MÉTODOS GENERALES ============
-  cambiarTab(tab: 'productos' | 'accesorios'): void {
+  cambiarTab(tab: 'productos' | 'accesorios' | 'ofertas'): void {
     this.tabActiva = tab;
   }
 
   cerrarSesion(): void {
     this.authService.logout();
+  }
+
+  // ============ MÉTODOS DE OFERTAS ============
+  cargarOfertas(): void {
+    this.ofertaService.getOfertasCache().subscribe({
+      next: (ofertas) => {
+        this.ofertas = ofertas;
+      }
+    });
+  }
+
+  crearOfertaVacia(): Oferta {
+    return {
+      slug: '',
+      nombre: '',
+      precio: 0,
+      foto: '',
+      referencia: '',
+      bateria: '',
+      sistema: '',
+      procesador: '',
+      ram: '',
+      almacenamiento: '',
+      pantalla: '',
+      camara: '',
+      descuento: 0
+    };
+  }
+
+  abrirFormularioNuevaOferta(): void {
+    this.modoEdicionOferta = false;
+    this.ofertaForm = this.crearOfertaVacia();
+    this.mostrarFormularioOferta = true;
+  }
+
+  editarOferta(oferta: Oferta): void {
+    this.modoEdicionOferta = true;
+    this.ofertaEditando = oferta;
+    this.ofertaForm = { ...oferta };
+    this.mostrarFormularioOferta = true;
+  }
+
+  guardarOferta(): void {
+    if (!this.ofertaForm.slug || this.ofertaForm.slug === '') {
+      this.ofertaForm.slug = this.ofertaService.generarSlug(this.ofertaForm.nombre);
+    }
+
+    if (this.modoEdicionOferta && this.ofertaEditando) {
+      this.ofertaService.actualizarOferta(this.ofertaEditando.slug, this.ofertaForm).subscribe({
+        next: () => console.log('Oferta actualizada correctamente'),
+        error: (err) => console.error('Error al actualizar oferta:', err)
+      });
+    } else {
+      this.ofertaService.agregarOferta(this.ofertaForm).subscribe({
+        next: () => console.log('Oferta agregada correctamente'),
+        error: (err) => console.error('Error al agregar oferta:', err)
+      });
+    }
+
+    this.cerrarFormularioOferta();
+  }
+
+  eliminarOferta(slug: string): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta oferta?')) {
+      this.ofertaService.eliminarOferta(slug).subscribe({
+        next: (success) => {
+          if (success) {
+            console.log('Oferta eliminada correctamente');
+          }
+        },
+        error: (err) => console.error('Error al eliminar oferta:', err)
+      });
+    }
+  }
+
+  cerrarFormularioOferta(): void {
+    this.mostrarFormularioOferta = false;
+    this.ofertaForm = this.crearOfertaVacia();
+    this.ofertaEditando = null;
   }
 }

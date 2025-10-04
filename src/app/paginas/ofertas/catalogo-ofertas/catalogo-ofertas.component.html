@@ -1,0 +1,64 @@
+<section class="catalogo">
+  <!-- Estado de carga -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando ofertas...</p>
+    </div>
+  }
+
+  <!-- Estado de error -->
+  @else if (error) {
+    <div class="error-container">
+      <p class="error-message">{{ error }}</p>
+      <button (click)="loadOfertas()" class="retry-button">Reintentar</button>
+    </div>
+  }
+
+  <!-- Listado de ofertas -->
+  @else {
+    <div class="ofertas-header">
+      <h2>🔥 Ofertas Especiales 🔥</h2>
+      <p>Aprovecha estos descuentos limitados en los mejores celulares</p>
+    </div>
+
+    <div class="grid">
+      @for (oferta of ofertas; track oferta.slug) {
+        <div class="card">
+          <!-- Badge de descuento -->
+          <div class="badge-descuento">
+            -{{ oferta.descuento }}%
+          </div>
+
+          <!-- Imagen clickeable -->
+          <a class="thumb"
+             [routerLink]="['/oferta', oferta.slug]"
+             [attr.aria-label]="'Ver ' + oferta.nombre">
+            <img [src]="oferta.foto" [alt]="oferta.nombre" (error)="onImgError($event)">
+          </a>
+
+          <!-- Nombre clickeable -->
+          <h4 class="nombre">
+            <a [routerLink]="['/oferta', oferta.slug]">
+              {{ oferta.nombre }}
+            </a>
+          </h4>
+
+          <!-- Precios -->
+          <div class="precios-container">
+            <div class="precio-original">
+              {{ oferta.precio | currency }}
+            </div>
+            <div class="precio-oferta">
+              {{ calcularPrecioFinal(oferta) | currency }}
+            </div>
+          </div>
+
+          <div class="ahorro">
+            Ahorras: {{ oferta.precio - calcularPrecioFinal(oferta) | currency }}
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>
