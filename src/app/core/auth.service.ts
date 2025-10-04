@@ -24,7 +24,7 @@ export interface UsuarioAutenticado {
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private usuariosUrl = '/data/usuarios.json';
+  private usuariosUrl = 'data/usuarios.json';
   
   private _currentUser$ = new BehaviorSubject<UsuarioAutenticado | null>(null);
   currentUser$ = this._currentUser$.asObservable();
