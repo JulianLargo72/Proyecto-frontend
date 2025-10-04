@@ -1,9 +1,10 @@
 import { CurrencyPipe, NgIf } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { AccesorioService, Accesorio } from '../../../core/accesorio.service';
 import { CartService } from '../../../core/cart.service';
-import { Subscription } from 'rxjs';
+import { APP_ROUTES } from '../../../core/constants/app.constants';
 
 @Component({
   selector: 'app-detalle-accesorio',
@@ -12,65 +13,82 @@ import { Subscription } from 'rxjs';
   templateUrl: './detalle-accesorio.component.html',
   styleUrl: './detalle-accesorio.component.css'
 })
-export class DetalleAccesorioComponent implements OnDestroy {
+export class DetalleAccesorioComponent implements OnInit, OnDestroy {
+  private readonly cart = inject(CartService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly accesorioService = inject(AccesorioService);
+
+  // Estado del componente
   accesorio?: Accesorio;
-  loading: boolean = true;
-  error: string = '';
-  private subscription?: Subscription;
+  loading = true;
+  error = '';
 
-  constructor(
-    private cart: CartService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private accesorioService: AccesorioService
-  ) {}
+  // Subject para manejo de suscripciones
+  private readonly destroy$ = new Subject<void>();
 
-  ngOnInit() {
-    const slug = this.route.snapshot.paramMap.get('slug')!;
+  ngOnInit(): void {
+    const slug = this.route.snapshot.paramMap.get('slug');
+    
+    if (!slug) {
+      this.handleError('Slug no proporcionado');
+      return;
+    }
+
+    this.loadAccesorio(slug);
+  }
+
+  ngOnDestroy(): void {
+    // Completar todas las suscripciones para prevenir memory leaks
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadAccesorio(slug: string): void {
     this.loading = true;
     this.error = '';
 
     // Suscribirse al cache reactivo para obtener actualizaciones en tiempo real
-    this.subscription = this.accesorioService.getBySlug(slug).subscribe({
-      next: (accesorio) => {
-        if (accesorio) {
-          this.accesorio = accesorio;
-          this.error = '';
-        } else if (!this.loading) {
-          // Solo mostrar error si ya terminó la carga inicial y el accesorio desapareció
-          this.error = 'Accesorio no encontrado o fue eliminado';
-          setTimeout(() => {
-            this.router.navigateByUrl('/accesorios');
-          }, 2000);
+    this.accesorioService.getBySlug(slug)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (accesorio) => {
+          if (accesorio) {
+            this.accesorio = accesorio;
+            this.error = '';
+          } else if (!this.loading) {
+            // Solo mostrar error si ya terminó la carga inicial y el accesorio desapareció
+            this.handleError('Accesorio no encontrado o fue eliminado');
+          }
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar el accesorio:', err);
+          this.handleError('Error al cargar el accesorio');
         }
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar el accesorio:', err);
-        this.error = 'Error al cargar el accesorio';
-        this.loading = false;
-        setTimeout(() => {
-          this.router.navigateByUrl('/accesorios');
-        }, 2000);
-      }
-    });
+      });
   }
 
-  ngOnDestroy() {
-    // Limpiar suscripción para evitar memory leaks
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+  private handleError(mensaje: string): void {
+    this.error = mensaje;
+    this.loading = false;
+    setTimeout(() => {
+      this.router.navigateByUrl(APP_ROUTES.accesorios);
+    }, 2000);
+  }
+
+  volver(): void {
+    this.router.navigateByUrl(APP_ROUTES.accesorios);
+  }
+
+  agregarAlCarrito(): void {
+    if (!this.accesorio) {
+      console.warn('No se puede agregar al carrito: accesorio no disponible');
+      return;
     }
-  }
 
-  volver() {
-    this.router.navigateByUrl('/accesorios');
-  }
-
-  agregarAlCarrito() {
-    if (!this.accesorio) return;
     const { slug, nombre, precio, foto } = this.accesorio;
     this.cart.add({ slug, nombre, precio, foto, tipo: 'accesorio' }, 1);
-    this.router.navigateByUrl('/carrito');
+    this.router.navigateByUrl(APP_ROUTES.carrito);
   }
 }
