@@ -17,7 +17,7 @@ export interface Accesorio {
 })
 export class AccesorioService {
   private http = inject(HttpClient);
-  private readonly jsonUrl = '/data/accesorios.json';
+  private readonly jsonUrl = 'data/accesorios.json';
   
   private accesoriosCache$ = new BehaviorSubject<Accesorio[]>([]);
   private cacheLoaded = false;

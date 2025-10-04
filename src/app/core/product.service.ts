@@ -24,7 +24,7 @@ export interface Celular {
 })
 export class ProductService {
   private http = inject(HttpClient);
-  private readonly jsonUrl = '/data/productos.json';
+  private readonly jsonUrl = 'data/productos.json';
   
   // Cache local de productos para el CRUD
   private productosCache$ = new BehaviorSubject<Celular[]>([]);

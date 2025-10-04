@@ -24,7 +24,7 @@ export interface Oferta {
 })
 export class OfertaService {
   private http = inject(HttpClient);
-  private readonly jsonUrl = '/data/ofertas.json';
+  private readonly jsonUrl = 'data/ofertas.json';
   
   // Cache local de ofertas para el CRUD (Patrón Observer)
   private ofertasCache$ = new BehaviorSubject<Oferta[]>([]);
