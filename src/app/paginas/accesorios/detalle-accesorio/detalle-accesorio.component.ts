@@ -1,20 +1,19 @@
 import { CurrencyPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { ProductService, Celular } from '../../../core/product.service';
-import { CartService} from '../../../core/cart.service';
+import { AccesorioService, Accesorio } from '../../../core/accesorio.service';
+import { CartService } from '../../../core/cart.service';
 import { Subscription } from 'rxjs';
 
-
 @Component({
-  selector: 'app-detalle-prod-component',
+  selector: 'app-detalle-accesorio',
   standalone: true,
   imports: [RouterModule, CurrencyPipe, NgIf],
-  templateUrl: './detalle-prod-component.component.html',
-  styleUrl: './detalle-prod-component.component.css'
+  templateUrl: './detalle-accesorio.component.html',
+  styleUrl: './detalle-accesorio.component.css'
 })
-export class DetalleProdComponentComponent implements OnDestroy {
-  celular?: Celular;
+export class DetalleAccesorioComponent implements OnDestroy {
+  accesorio?: Accesorio;
   loading: boolean = true;
   error: string = '';
   private subscription?: Subscription;
@@ -23,7 +22,7 @@ export class DetalleProdComponentComponent implements OnDestroy {
     private cart: CartService,
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private accesorioService: AccesorioService
   ) {}
 
   ngOnInit() {
@@ -32,26 +31,26 @@ export class DetalleProdComponentComponent implements OnDestroy {
     this.error = '';
 
     // Suscribirse al cache reactivo para obtener actualizaciones en tiempo real
-    this.subscription = this.productService.getBySlug(slug).subscribe({
-      next: (producto) => {
-        if (producto) {
-          this.celular = producto;
+    this.subscription = this.accesorioService.getBySlug(slug).subscribe({
+      next: (accesorio) => {
+        if (accesorio) {
+          this.accesorio = accesorio;
           this.error = '';
         } else if (!this.loading) {
-          // Solo mostrar error si ya terminó la carga inicial y el producto desapareció
-          this.error = 'Producto no encontrado o fue eliminado';
+          // Solo mostrar error si ya terminó la carga inicial y el accesorio desapareció
+          this.error = 'Accesorio no encontrado o fue eliminado';
           setTimeout(() => {
-            this.router.navigateByUrl('/catalogo');
+            this.router.navigateByUrl('/accesorios');
           }, 2000);
         }
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar el producto:', err);
-        this.error = 'Error al cargar el producto';
+        console.error('Error al cargar el accesorio:', err);
+        this.error = 'Error al cargar el accesorio';
         this.loading = false;
         setTimeout(() => {
-          this.router.navigateByUrl('/catalogo');
+          this.router.navigateByUrl('/accesorios');
         }, 2000);
       }
     });
@@ -65,13 +64,13 @@ export class DetalleProdComponentComponent implements OnDestroy {
   }
 
   volver() {
-    this.router.navigateByUrl('/catalogo');
+    this.router.navigateByUrl('/accesorios');
   }
 
   agregarAlCarrito() {
-    if (!this.celular) return;
-    const { slug, nombre, precio, foto } = this.celular;
-    this.cart.add({ slug, nombre, precio, foto, tipo: 'producto' }, 1);
+    if (!this.accesorio) return;
+    const { slug, nombre, precio, foto } = this.accesorio;
+    this.cart.add({ slug, nombre, precio, foto, tipo: 'accesorio' }, 1);
     this.router.navigateByUrl('/carrito');
   }
 }

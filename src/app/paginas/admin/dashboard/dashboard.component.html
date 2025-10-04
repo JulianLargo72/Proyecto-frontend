@@ -14,190 +14,265 @@
     </div>
   </header>
 
+  <!-- Tabs Navigation -->
+  <nav class="tabs-nav">
+    <button 
+      class="tab-button" 
+      [class.active]="tabActiva === 'productos'"
+      (click)="cambiarTab('productos')">
+      📱 Productos
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="tabActiva === 'accesorios'"
+      (click)="cambiarTab('accesorios')">
+      🎧 Accesorios
+    </button>
+  </nav>
+
   <!-- Main Content -->
   <main class="dashboard-main">
-    <div class="section-header">
-      <h2>Gestión de Productos</h2>
-      <button class="btn-primary" (click)="abrirFormularioNuevo()">
-        ➕ Agregar Nuevo Producto
-      </button>
-    </div>
+    <!-- ============ TAB PRODUCTOS ============ -->
+    @if (tabActiva === 'productos') {
+      <div class="tab-content">
+        <div class="section-header">
+          <h2>Gestión de Productos</h2>
+          <button class="btn-primary" (click)="abrirFormularioNuevoProducto()">
+            ➕ Agregar Nuevo Producto
+          </button>
+        </div>
 
-    <!-- Tabla de Productos -->
-    <div class="table-container">
-      <table class="products-table">
-        <thead>
-          <tr>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Referencia</th>
-            <th>Precio</th>
-            <th>RAM</th>
-            <th>Almacenamiento</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          @if (productos.length === 0) {
-            <tr>
-              <td colspan="7" class="empty-state">
-                No hay productos disponibles
-              </td>
-            </tr>
-          }
-          @for (producto of productos; track producto.slug) {
-            <tr>
-              <td>
-                <img [src]="producto.foto" [alt]="producto.nombre" class="product-thumb">
-              </td>
-              <td class="product-name">{{ producto.nombre }}</td>
-              <td>{{ producto.referencia }}</td>
-              <td class="product-price">{{ producto.precio | currency }}</td>
-              <td>{{ producto.ram }}</td>
-              <td>{{ producto.almacenamiento }}</td>
-              <td class="actions-cell">
-                <button class="btn-edit" (click)="editarProducto(producto)" title="Editar">
-                  ✏️
-                </button>
-                <button class="btn-delete" (click)="eliminarProducto(producto.slug)" title="Eliminar">
-                  🗑️
-                </button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+        <div class="table-container">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Referencia</th>
+                <th>Precio</th>
+                <th>RAM</th>
+                <th>Almacenamiento</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (productos.length === 0) {
+                <tr>
+                  <td colspan="7" class="empty-state">
+                    No hay productos disponibles
+                  </td>
+                </tr>
+              }
+              @for (producto of productos; track producto.slug) {
+                <tr>
+                  <td>
+                    <img [src]="producto.foto" [alt]="producto.nombre" class="product-thumb">
+                  </td>
+                  <td class="product-name">{{ producto.nombre }}</td>
+                  <td>{{ producto.referencia }}</td>
+                  <td class="product-price">{{ producto.precio | currency }}</td>
+                  <td>{{ producto.ram }}</td>
+                  <td>{{ producto.almacenamiento }}</td>
+                  <td class="actions-cell">
+                    <button class="btn-edit" (click)="editarProducto(producto)" title="Editar">
+                      ✏️
+                    </button>
+                    <button class="btn-delete" (click)="eliminarProducto(producto.slug)" title="Eliminar">
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- ============ TAB ACCESORIOS ============ -->
+    @if (tabActiva === 'accesorios') {
+      <div class="tab-content">
+        <div class="section-header">
+          <h2>Gestión de Accesorios</h2>
+          <button class="btn-primary" (click)="abrirFormularioNuevoAccesorio()">
+            ➕ Agregar Nuevo Accesorio
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Precio</th>
+                <th>Información</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (accesorios.length === 0) {
+                <tr>
+                  <td colspan="6" class="empty-state">
+                    No hay accesorios disponibles
+                  </td>
+                </tr>
+              }
+              @for (accesorio of accesorios; track accesorio.slug) {
+                <tr>
+                  <td>
+                    <img [src]="accesorio.foto" [alt]="accesorio.nombre" class="product-thumb">
+                  </td>
+                  <td class="product-name">{{ accesorio.nombre }}</td>
+                  <td>{{ accesorio.marca }}</td>
+                  <td class="product-price">{{ accesorio.precio | currency }}</td>
+                  <td class="info-cell">{{ accesorio.informacion_adicional }}</td>
+                  <td class="actions-cell">
+                    <button class="btn-edit" (click)="editarAccesorio(accesorio)" title="Editar">
+                      ✏️
+                    </button>
+                    <button class="btn-delete" (click)="eliminarAccesorio(accesorio.slug)" title="Eliminar">
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
   </main>
 
-  <!-- Modal de Formulario -->
-  @if (mostrarFormulario) {
-    <div class="modal-overlay" (click)="cerrarFormulario()">
+  <!-- ============ MODAL FORMULARIO PRODUCTOS ============ -->
+  @if (mostrarFormularioProducto) {
+    <div class="modal-overlay" (click)="cerrarFormularioProducto()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
-          <h3>{{ modoEdicion ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
-          <button class="btn-close" (click)="cerrarFormulario()">✕</button>
+          <h3>{{ modoEdicionProducto ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+          <button class="btn-close" (click)="cerrarFormularioProducto()">✕</button>
         </div>
 
         <form class="product-form" (ngSubmit)="guardarProducto()">
           <div class="form-grid">
             <div class="form-group">
               <label>Nombre *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.nombre" 
-                name="nombre"
-                placeholder="Samsung Galaxy S24 Ultra"
-                required>
+              <input type="text" [(ngModel)]="productoForm.nombre" name="nombre" placeholder="Samsung Galaxy S24 Ultra" required>
             </div>
 
             <div class="form-group">
               <label>Referencia *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.referencia" 
-                name="referencia"
-                placeholder="SM-S928B"
-                required>
+              <input type="text" [(ngModel)]="productoForm.referencia" name="referencia" placeholder="SM-S928B" required>
             </div>
 
             <div class="form-group">
               <label>Precio *</label>
-              <input 
-                type="number" 
-                [(ngModel)]="productoForm.precio" 
-                name="precio"
-                placeholder="3649900"
-                required>
+              <input type="number" [(ngModel)]="productoForm.precio" name="precio" placeholder="3649900" required>
             </div>
 
             <div class="form-group">
               <label>URL de Foto *</label>
-              <input 
-                type="url" 
-                [(ngModel)]="productoForm.foto" 
-                name="foto"
-                placeholder="https://..."
-                required>
+              <input type="url" [(ngModel)]="productoForm.foto" name="foto" placeholder="https://..." required>
             </div>
 
             <div class="form-group">
               <label>Batería *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.bateria" 
-                name="bateria"
-                placeholder="5000 mAh"
-                required>
+              <input type="text" [(ngModel)]="productoForm.bateria" name="bateria" placeholder="5000 mAh" required>
             </div>
 
             <div class="form-group">
               <label>Sistema Operativo *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.sistema" 
-                name="sistema"
-                placeholder="Android 14"
-                required>
+              <input type="text" [(ngModel)]="productoForm.sistema" name="sistema" placeholder="Android 14" required>
             </div>
 
             <div class="form-group">
               <label>Procesador *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.procesador" 
-                name="procesador"
-                placeholder="Snapdragon 8 Gen 3"
-                required>
+              <input type="text" [(ngModel)]="productoForm.procesador" name="procesador" placeholder="Snapdragon 8 Gen 3" required>
             </div>
 
             <div class="form-group">
               <label>RAM *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.ram" 
-                name="ram"
-                placeholder="12GB"
-                required>
+              <input type="text" [(ngModel)]="productoForm.ram" name="ram" placeholder="12GB" required>
             </div>
 
             <div class="form-group">
               <label>Almacenamiento *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.almacenamiento" 
-                name="almacenamiento"
-                placeholder="256GB"
-                required>
+              <input type="text" [(ngModel)]="productoForm.almacenamiento" name="almacenamiento" placeholder="256GB" required>
             </div>
 
             <div class="form-group">
               <label>Pantalla *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.pantalla" 
-                name="pantalla"
-                placeholder="6.8 pulgadas AMOLED"
-                required>
+              <input type="text" [(ngModel)]="productoForm.pantalla" name="pantalla" placeholder="6.8 pulgadas AMOLED" required>
             </div>
 
             <div class="form-group form-group-full">
               <label>Cámara *</label>
-              <input 
-                type="text" 
-                [(ngModel)]="productoForm.camara" 
-                name="camara"
-                placeholder="200MP principal, 50MP teleobjetivo..."
-                required>
+              <input type="text" [(ngModel)]="productoForm.camara" name="camara" placeholder="200MP principal, 50MP teleobjetivo..." required>
             </div>
           </div>
 
           <div class="form-actions">
-            <button type="button" class="btn-secondary" (click)="cerrarFormulario()">
+            <button type="button" class="btn-secondary" (click)="cerrarFormularioProducto()">
               Cancelar
             </button>
             <button type="submit" class="btn-primary">
-              {{ modoEdicion ? 'Actualizar' : 'Guardar' }} Producto
+              {{ modoEdicionProducto ? 'Actualizar' : 'Guardar' }} Producto
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- ============ MODAL FORMULARIO ACCESORIOS ============ -->
+  @if (mostrarFormularioAccesorio) {
+    <div class="modal-overlay" (click)="cerrarFormularioAccesorio()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ modoEdicionAccesorio ? 'Editar Accesorio' : 'Nuevo Accesorio' }}</h3>
+          <button class="btn-close" (click)="cerrarFormularioAccesorio()">✕</button>
+        </div>
+
+        <form class="product-form" (ngSubmit)="guardarAccesorio()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre *</label>
+              <input type="text" [(ngModel)]="accesorioForm.nombre" name="nombre" placeholder="AirPods Pro" required>
+            </div>
+
+            <div class="form-group">
+              <label>Marca *</label>
+              <input type="text" [(ngModel)]="accesorioForm.marca" name="marca" placeholder="Apple" required>
+            </div>
+
+            <div class="form-group">
+              <label>Precio *</label>
+              <input type="number" [(ngModel)]="accesorioForm.precio" name="precio" placeholder="249000" required>
+            </div>
+
+            <div class="form-group">
+              <label>URL de Foto *</label>
+              <input type="url" [(ngModel)]="accesorioForm.foto" name="foto" placeholder="https://..." required>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label>Información Adicional *</label>
+              <textarea 
+                [(ngModel)]="accesorioForm.informacion_adicional" 
+                name="informacion_adicional"
+                rows="4"
+                placeholder="Descripción detallada del accesorio..."
+                required></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="cerrarFormularioAccesorio()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">
+              {{ modoEdicionAccesorio ? 'Actualizar' : 'Guardar' }} Accesorio
             </button>
           </div>
         </form>

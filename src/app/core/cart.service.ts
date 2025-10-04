@@ -6,6 +6,7 @@ export interface CartItem {
   precio: number;
   foto: string;
   qty: number;
+  tipo?: 'producto' | 'accesorio'; // Opcional: para diferenciar el tipo de item
 }
 
 @Injectable({

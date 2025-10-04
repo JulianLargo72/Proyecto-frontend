@@ -7,6 +7,8 @@ import { CheckoutComponent } from './paginas/cart/checkout/checkout.component';
 import { SoporteComponent } from './paginas/soporte/soporte.component';
 import { LoginAdminComponent } from './paginas/auth/login-admin/login-admin.component';
 import { DashboardComponent } from './paginas/admin/dashboard/dashboard.component';
+import { CatalogoAccesoriosComponent } from './paginas/accesorios/catalogo-accesorios/catalogo-accesorios.component';
+import { DetalleAccesorioComponent } from './paginas/accesorios/detalle-accesorio/detalle-accesorio.component';
 import { authGuard } from './paginas/cart/core/auth.guard';
 
 export const routes: Routes = [
@@ -14,6 +16,8 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'catalogo', component: CatalogoComponentComponent },
     { path: 'producto/:slug', component: DetalleProdComponentComponent },
+    { path: 'accesorios', component: CatalogoAccesoriosComponent },
+    { path: 'accesorio/:slug', component: DetalleAccesorioComponent },
     { path: 'carrito', component: CarritoComponentComponent },
     { path: 'checkout', component: CheckoutComponent },
     { path: 'soporte', component: SoporteComponent },

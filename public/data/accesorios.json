@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "airpods-pro-2",
+    "nombre": "AirPods Pro (2da Generación)",
+    "marca": "Apple",
+    "precio": 249000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_777526-MLU72447682507_102023-F.webp",
+    "informacion_adicional": "Auriculares inalámbricos con cancelación activa de ruido, audio espacial personalizado, resistencia al agua y al sudor IPX4, estuche MagSafe con hasta 30 horas de batería total."
+  },
+  {
+    "slug": "cargador-rapido-65w",
+    "nombre": "Cargador Rápido USB-C 65W",
+    "marca": "Anker",
+    "precio": 89000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_941392-MLU75190366997_032024-F.webp",
+    "informacion_adicional": "Cargador compacto con tecnología GaN, compatible con laptops, tablets y smartphones. Incluye cable USB-C a USB-C de 2 metros. Protección contra sobrecarga y sobrecalentamiento."
+  },
+  {
+    "slug": "funda-spigen-tough-armor",
+    "nombre": "Funda Spigen Tough Armor",
+    "marca": "Spigen",
+    "precio": 75000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_828664-MCO72701488917_112023-F.webp",
+    "informacion_adicional": "Funda de doble capa con tecnología Air Cushion para máxima protección contra impactos. Compatible con iPhone 15 Pro Max. Soporte integrado y bordes elevados para proteger cámara y pantalla."
+  },
+  {
+    "slug": "protector-pantalla-gorilla",
+    "nombre": "Protector de Pantalla Gorilla Glass",
+    "marca": "Belkin",
+    "precio": 45000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_689987-MLA71580799676_092023-F.webp",
+    "informacion_adicional": "Vidrio templado ultra resistente de 0.33mm, dureza 9H, transparencia HD del 99.9%, resistente a rayones y huellas dactilares. Incluye kit de instalación fácil sin burbujas."
+  },
+  {
+    "slug": "power-bank-20000mah",
+    "nombre": "Power Bank 20000mAh",
+    "marca": "Samsung",
+    "precio": 125000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_751845-MLU72816938990_112023-F.webp",
+    "informacion_adicional": "Batería externa de alta capacidad con carga rápida 25W, doble puerto USB (USB-C y USB-A), indicador LED de batería, diseño compacto y ligero. Carga hasta 4 dispositivos completos."
+  },
+  {
+    "slug": "soporte-auto-magnetico",
+    "nombre": "Soporte Auto Magnético 360°",
+    "marca": "iOttie",
+    "precio": 55000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_910715-MLU72881299178_112023-F.webp",
+    "informacion_adicional": "Soporte de celular para auto con tecnología MagSafe, rotación 360°, instalación en rejilla de ventilación o tablero. Agarre magnético ultra fuerte, compatible con iPhone 12 en adelante."
+  },
+  {
+    "slug": "cable-usb-c-trenzado",
+    "nombre": "Cable USB-C Trenzado 2M",
+    "marca": "Ugreen",
+    "precio": 35000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_835296-MLA52569882828_112022-F.webp",
+    "informacion_adicional": "Cable de nylon trenzado reforzado, carga rápida 100W, transferencia de datos USB 3.1 hasta 10Gbps. Conectores metálicos resistentes, garantía de 12000+ dobleces. Compatible con todos los dispositivos USB-C."
+  },
+  {
+    "slug": "smartwatch-band-leather",
+    "nombre": "Correa Cuero Genuino para Smartwatch",
+    "marca": "Nomad",
+    "precio": 95000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_626445-MLU73171991655_122023-F.webp",
+    "informacion_adicional": "Correa de cuero genuino Horween con acabado natural que mejora con el tiempo. Hebilla de acero inoxidable, compatible con Apple Watch Series 4-9 (41mm/42mm/45mm). Disponible en color marrón oscuro."
+  },
+  {
+    "slug": "auriculares-deportivos-jbl",
+    "nombre": "Auriculares Deportivos JBL Endurance",
+    "marca": "JBL",
+    "precio": 180000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_698543-MLA53521856276_012023-F.webp",
+    "informacion_adicional": "Auriculares inalámbricos in-ear con ganchos ergonómicos PowerHook, resistencia al agua IPX7, hasta 8 horas de batería, control táctil, tecnología TalkThru para escuchar sin quitarlos. Ideal para running y gym."
+  },
+  {
+    "slug": "ring-light-streaming",
+    "nombre": "Ring Light LED para Streaming",
+    "marca": "Elgato",
+    "precio": 210000,
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_2X_761249-MLU72674181248_112023-F.webp",
+    "informacion_adicional": "Aro de luz LED profesional de 12 pulgadas con 3 modos de color (cálido, frío, neutro), control de brillo 0-100%, soporte para smartphone, trípode ajustable hasta 160cm. Perfecto para streaming, TikTok, fotografía."
+  }
+]

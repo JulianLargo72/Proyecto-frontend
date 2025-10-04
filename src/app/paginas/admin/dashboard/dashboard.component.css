@@ -47,6 +47,49 @@
   background: #f0f0f0;
 }
 
+/* Tabs Navigation */
+.tabs-nav {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px 0;
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid #ddd;
+}
+
+.tab-button {
+  background: transparent;
+  color: #666;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px 8px 0 0;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.tab-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #111;
+}
+
+.tab-button.active {
+  background: #fff;
+  color: #11181D;
+  border-bottom: 3px solid #11181D;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Main Content */
 .dashboard-main {
   max-width: 1400px;
@@ -295,6 +338,22 @@
   background: #e0e0e0;
 }
 
+/* Celda de información para accesorios */
+.info-cell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: #666;
+}
+
+/* Textarea para formulario de accesorios */
+textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .header-content {
@@ -320,6 +379,10 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
+
+  .tabs-nav {
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 600px) {
@@ -333,5 +396,10 @@
 
   .product-form {
     padding: 16px;
+  }
+
+  .tab-button {
+    font-size: 13px;
+    padding: 10px 16px;
   }
 }
