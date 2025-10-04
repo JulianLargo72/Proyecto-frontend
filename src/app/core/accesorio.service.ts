@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import { SlugUtil } from './utils/slug.util';
 
 export interface Accesorio {
   slug: string;
@@ -15,10 +16,13 @@ export interface Accesorio {
   providedIn: 'root'
 })
 export class AccesorioService {
+  private http = inject(HttpClient);
+  private readonly jsonUrl = '/data/accesorios.json';
+  
   private accesoriosCache$ = new BehaviorSubject<Accesorio[]>([]);
   private cacheLoaded = false;
 
-  constructor(private http: HttpClient) {
+  constructor() {
     // Cargar accesorios al inicializar el servicio
     this.loadAccesorios();
   }
@@ -27,7 +31,7 @@ export class AccesorioService {
   private loadAccesorios(): void {
     if (this.cacheLoaded) return;
 
-    this.http.get<Accesorio[]>('/data/accesorios.json').pipe(
+    this.http.get<Accesorio[]>(this.jsonUrl).pipe(
       catchError(error => {
         console.error('Error al cargar accesorios:', error);
         return of([]);
@@ -40,7 +44,7 @@ export class AccesorioService {
 
   // Obtener todos los accesorios desde el JSON (para carga inicial)
   getAccesorios(): Observable<Accesorio[]> {
-    return this.http.get<Accesorio[]>('/data/accesorios.json').pipe(
+    return this.http.get<Accesorio[]>(this.jsonUrl).pipe(
       tap(accesorios => {
         if (!this.cacheLoaded) {
           this.accesoriosCache$.next(accesorios);
@@ -70,7 +74,7 @@ export class AccesorioService {
   agregarAccesorio(accesorio: Omit<Accesorio, 'slug'>): Observable<Accesorio> {
     const nuevoAccesorio: Accesorio = {
       ...accesorio,
-      slug: this.generarSlug(accesorio.nombre)
+      slug: SlugUtil.generar(accesorio.nombre)
     };
 
     const accesoriosActuales = this.accesoriosCache$.value;
@@ -123,15 +127,8 @@ export class AccesorioService {
     return of(true);
   }
 
-  // Generar slug a partir del nombre
-  private generarSlug(nombre: string): string {
-    return nombre
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Eliminar acentos
-      .replace(/[^a-z0-9\s-]/g, '') // Eliminar caracteres especiales
-      .trim()
-      .replace(/\s+/g, '-') // Espacios a guiones
-      .replace(/-+/g, '-'); // Múltiples guiones a uno solo
+  // Generar slug a partir del nombre (delegado a utilidad)
+  generarSlug(nombre: string): string {
+    return SlugUtil.generar(nombre);
   }
 }

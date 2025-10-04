@@ -88,9 +88,15 @@ export class DashboardComponent implements OnInit {
     }
 
     if (this.modoEdicionProducto && this.productoEditando) {
-      this.productService.actualizarProducto(this.productoEditando.slug, this.productoForm);
+      this.productService.actualizarProducto(this.productoEditando.slug, this.productoForm).subscribe({
+        next: () => console.log('Producto actualizado correctamente'),
+        error: (err) => console.error('Error al actualizar producto:', err)
+      });
     } else {
-      this.productService.agregarProducto(this.productoForm);
+      this.productService.agregarProducto(this.productoForm).subscribe({
+        next: () => console.log('Producto agregado correctamente'),
+        error: (err) => console.error('Error al agregar producto:', err)
+      });
     }
 
     this.cerrarFormularioProducto();
@@ -98,7 +104,14 @@ export class DashboardComponent implements OnInit {
 
   eliminarProducto(slug: string): void {
     if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      this.productService.eliminarProducto(slug);
+      this.productService.eliminarProducto(slug).subscribe({
+        next: (success) => {
+          if (success) {
+            console.log('Producto eliminado correctamente');
+          }
+        },
+        error: (err) => console.error('Error al eliminar producto:', err)
+      });
     }
   }
 
@@ -143,21 +156,19 @@ export class DashboardComponent implements OnInit {
 
   guardarAccesorio(): void {
     if (!this.accesorioForm.slug || this.accesorioForm.slug === '') {
-      // Generar slug automáticamente basado en el nombre
-      this.accesorioForm.slug = this.accesorioForm.nombre
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .trim()
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-');
+      this.accesorioForm.slug = this.accesorioService.generarSlug(this.accesorioForm.nombre);
     }
 
     if (this.modoEdicionAccesorio && this.accesorioEditando) {
-      this.accesorioService.actualizarAccesorio(this.accesorioEditando.slug, this.accesorioForm);
+      this.accesorioService.actualizarAccesorio(this.accesorioEditando.slug, this.accesorioForm).subscribe({
+        next: () => console.log('Accesorio actualizado correctamente'),
+        error: (err) => console.error('Error al actualizar accesorio:', err)
+      });
     } else {
-      this.accesorioService.agregarAccesorio(this.accesorioForm);
+      this.accesorioService.agregarAccesorio(this.accesorioForm).subscribe({
+        next: () => console.log('Accesorio agregado correctamente'),
+        error: (err) => console.error('Error al agregar accesorio:', err)
+      });
     }
 
     this.cerrarFormularioAccesorio();
@@ -165,7 +176,14 @@ export class DashboardComponent implements OnInit {
 
   eliminarAccesorio(slug: string): void {
     if (confirm('¿Estás seguro de que deseas eliminar este accesorio?')) {
-      this.accesorioService.eliminarAccesorio(slug);
+      this.accesorioService.eliminarAccesorio(slug).subscribe({
+        next: (success) => {
+          if (success) {
+            console.log('Accesorio eliminado correctamente');
+          }
+        },
+        error: (err) => console.error('Error al eliminar accesorio:', err)
+      });
     }
   }
 

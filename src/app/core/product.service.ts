@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap, map } from 'rxjs';
+import { Observable, BehaviorSubject, tap, map, catchError, of } from 'rxjs';
+import { SlugUtil } from './utils/slug.util';
 
 export interface Celular {
   slug: string;
@@ -23,25 +24,42 @@ export interface Celular {
 })
 export class ProductService {
   private http = inject(HttpClient);
-  private jsonUrl = '/data/productos.json';
+  private readonly jsonUrl = '/data/productos.json';
   
   // Cache local de productos para el CRUD
   private productosCache$ = new BehaviorSubject<Celular[]>([]);
+  private cacheLoaded = false;
 
   constructor() {
     this.loadProductos();
   }
 
   private loadProductos(): void {
+    if (this.cacheLoaded) return;
+
     this.getCelulares().subscribe({
-      next: (productos) => this.productosCache$.next(productos),
+      next: (productos) => {
+        this.productosCache$.next(productos);
+        this.cacheLoaded = true;
+      },
       error: (err) => console.error('Error al cargar productos:', err)
     });
   }
 
   // Obtener todos los celulares desde el JSON
   getCelulares(): Observable<Celular[]> {
-    return this.http.get<Celular[]>(this.jsonUrl);
+    return this.http.get<Celular[]>(this.jsonUrl).pipe(
+      tap(productos => {
+        if (!this.cacheLoaded) {
+          this.productosCache$.next(productos);
+          this.cacheLoaded = true;
+        }
+      }),
+      catchError(error => {
+        console.error('Error al obtener productos:', error);
+        return of([]);
+      })
+    );
   }
 
   // Obtener productos desde el cache
@@ -56,36 +74,57 @@ export class ProductService {
     );
   }
 
-  // CRUD Methods (trabajan con el cache local)
+  // CRUD Methods (trabajan con el cache local y retornan Observables para consistencia)
   
-  agregarProducto(producto: Celular): void {
+  agregarProducto(producto: Omit<Celular, 'slug'>): Observable<Celular> {
+    const nuevoProducto: Celular = {
+      ...producto,
+      slug: SlugUtil.generar(producto.nombre)
+    };
+
     const productos = this.productosCache$.value;
-    this.productosCache$.next([...productos, producto]);
+    this.productosCache$.next([...productos, nuevoProducto]);
+
+    return of(nuevoProducto);
   }
 
-  actualizarProducto(slug: string, productoActualizado: Celular): void {
+  actualizarProducto(slug: string, productoActualizado: Partial<Celular>): Observable<Celular | undefined> {
     const productos = this.productosCache$.value;
     const index = productos.findIndex(p => p.slug === slug);
     
-    if (index !== -1) {
-      productos[index] = productoActualizado;
-      this.productosCache$.next([...productos]);
+    if (index === -1) {
+      console.warn(`Producto con slug "${slug}" no encontrado`);
+      return of(undefined);
     }
+
+    const productoModificado = { ...productos[index], ...productoActualizado };
+    const nuevosProductos = [
+      ...productos.slice(0, index),
+      productoModificado,
+      ...productos.slice(index + 1)
+    ];
+
+    this.productosCache$.next(nuevosProductos);
+
+    return of(productoModificado);
   }
 
-  eliminarProducto(slug: string): void {
+  eliminarProducto(slug: string): Observable<boolean> {
     const productos = this.productosCache$.value;
     const productosFiltrados = productos.filter(p => p.slug !== slug);
+
+    if (productos.length === productosFiltrados.length) {
+      console.warn(`Producto con slug "${slug}" no encontrado para eliminar`);
+      return of(false);
+    }
+
     this.productosCache$.next(productosFiltrados);
+
+    return of(true);
   }
 
-  // Generar slug automáticamente desde el nombre
+  // Generar slug automáticamente desde el nombre (delegado a utilidad)
   generarSlug(nombre: string): string {
-    return nombre
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+    return SlugUtil.generar(nombre);
   }
 }
