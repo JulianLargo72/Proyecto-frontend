@@ -352,7 +352,6 @@ proyecto-frontend/
 ├── package.json                  # Dependencias del proyecto
 ├── tsconfig.json                 # Configuración de TypeScript
 ├── README.md                     # Este archivo
-└── CREDENCIALES_ADMIN.md         # Credenciales de administrador
 ```
 
 ---
@@ -482,14 +481,28 @@ src/environments/environment.prod.ts     # Producción
 #### 4. Accesorios
 - **Ruta**: `/accesorios`
 - **Descripción**: Catálogo de accesorios tecnológicos
-- **Funcionalidades**: Filtrado por marca, precio
+- **Funcionalidades**: Vista de tarjetas, precios, características básicas
+- **Acciones**: Click en accesorios → Detalle
 
-#### 5. Ofertas
+#### 5. Detalle de Accesorios
+- **Ruta**: `/accesorio/:slug`
+- **Descripción**: Vista completa de un accesorio específico
+- **Información**: Especificaciones técnicas, precio, imágenes
+- **Acciones**: Agregar al carrito
+
+#### 6. Ofertas
 - **Ruta**: `/ofertas`
 - **Descripción**: Productos con descuentos especiales
 - **Características**: Badge de descuento, precio original vs precio final
+- **Funcionalidades**: Vista de tarjetas, precios, características básicas
 
-#### 6. Carrito de Compras
+#### 7. Detalle de Oferta
+- **Ruta**: `/oferta/:slug`
+- **Descripción**: Vista completa de una oferta específica
+- **Información**: Especificaciones técnicas, precio, imágenes, descuento
+- **Acciones**: Agregar al carrito
+
+#### 8. Carrito de Compras
 - **Ruta**: `/carrito`
 - **Funcionalidades**:
   - Ver productos agregados
@@ -498,7 +511,7 @@ src/environments/environment.prod.ts     # Producción
   - Ver subtotal y total
   - Proceder al checkout
 
-#### 7. Checkout
+#### 9. Checkout
 - **Ruta**: `/checkout`
 - **Formulario incluye**:
   - Datos personales (nombre, apellido, email, teléfono)
@@ -507,7 +520,7 @@ src/environments/environment.prod.ts     # Producción
   - Resumen del pedido
 - **Validaciones**: Campos obligatorios, formato de email
 
-#### 8. Soporte
+#### 10. Soporte
 - **Ruta**: `/soporte`
 - **Funcionalidades**:
   - Formulario de contacto
